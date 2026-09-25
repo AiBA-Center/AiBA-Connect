@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ภาพนิ่ง → วิดีโอ 3 ช็อต — คัมภีร์ใช้ AI</title>
+<meta name="theme-color" content="#ff6f61">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <a class="back-home" href="index.html">🏠 หน้าหลัก</a>
+  <div class="topbar-title">ภาพนิ่ง → วิดีโอ 3 ช็อต</div>
+  <div class="topbar-tools">
+    <button onclick="changeFontSize(1)" title="เพิ่มขนาดตัวอักษร">A+</button>
+    <button onclick="changeFontSize(-1)" title="ลดขนาดตัวอักษร">A-</button>
+    <button id="themeBtn" onclick="toggleTheme()" title="สลับธีม">🌙 มืด</button>
+  </div>
+</div></div>
+<div class="page-hero"><div class="page-hero-inner cat-video"><div class="page-emoji">🎞</div><div><h1>ภาพนิ่ง → วิดีโอ 3 ช็อต</h1><p>กำหนดการเคลื่อนกล้องและการเคลื่อนไหวทีละช็อต สำหรับ Google Flow</p></div></div></div>
+<main class="page">
+<div id="resumeBanner" class="resume-banner">
+  <div><strong>พบงานที่ทำค้างไว้ในหน้านี้</strong> <span id="resumeInfo"></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="primary-btn" style="padding:10px 18px;font-size:17px;" onclick="restoreWork()">ทำต่อจากเดิม</button>
+    <button class="danger-btn" style="padding:10px 18px;font-size:17px;" onclick="discardWork()">เริ่มใหม่</button>
+  </div>
+</div>
+<section id="flowBuilder" class="builder active">
+        <p class="section-description">
+            ใน Flow ให้เลือกโหมด "Frames to Video" แล้วอัปโหลดภาพนิ่งเป็นเฟรมแรกของแต่ละช็อต
+            จากนั้นวาง Prompt ที่ได้จากที่นี่ทีละช็อต — หัวใจของการคุมการเคลื่อนไหวคือบอกให้ชัด 3 อย่าง:
+            <strong>กล้องขยับยังไง</strong> · <strong>อะไรในภาพขยับ</strong> · <strong>อะไรห้ามเปลี่ยน</strong>
+        </p>
+
+        <div class="step">
+            <div><span class="step-number">1</span><span class="step-title">กำหนดแต่ละช็อต</span></div>
+            <p class="step-help">บอกว่าภาพนิ่งคืออะไร แล้วเลือกการเคลื่อนกล้อง การเคลื่อนไหว และความเร็ว (ทำครบทั้ง 3 ช็อต หรือทำแค่บางช็อตก็ได้)</p>
+
+            <div class="shot-card">
+                <h4><span class="shot-num">1</span>ช็อตที่ 1</h4>
+                <input id="flowImg1" class="large-input" type="text"
+                    placeholder="ภาพนิ่งนี้คืออะไร เช่น ชามก๋วยเตี๋ยวเรือมีไอน้ำ วางบนโต๊ะไม้"
+                    oninput="refreshFlowPrompt()">
+                <div class="shot-label">การเคลื่อนกล้อง</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="cam" data-shot="1" data-value="กล้องนิ่ง ไม่ขยับ" data-en="static locked-off camera" onclick="selectFlowChoice(this)"><span class="choice-icon">🔒</span>กล้องนิ่ง</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="ค่อย ๆ ซูมเข้าหาตัวแบบช้า ๆ" data-en="slow push-in toward the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔍</span>ซูมเข้า</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="ค่อย ๆ ถอยกล้องออกเผยให้เห็นภาพกว้าง" data-en="slow pull-out revealing the wider scene" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>ถอยออก</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="แพนกล้องจากซ้ายไปขวา" data-en="smooth pan from left to right" onclick="selectFlowChoice(this)"><span class="choice-icon">➡</span>แพนซ้าย→ขวา</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="แพนกล้องจากขวาไปซ้าย" data-en="smooth pan from right to left" onclick="selectFlowChoice(this)"><span class="choice-icon">⬅</span>แพนขวา→ซ้าย</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="เงยกล้องขึ้นช้า ๆ" data-en="slow tilt up" onclick="selectFlowChoice(this)"><span class="choice-icon">⬆</span>เงยขึ้น</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="ก้มกล้องลงช้า ๆ" data-en="slow tilt down" onclick="selectFlowChoice(this)"><span class="choice-icon">⬇</span>ก้มลง</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="กล้องหมุนรอบตัวแบบช้า ๆ" data-en="slow orbit around the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔄</span>หมุนรอบ</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="กล้องสไลด์ไปด้านข้าง" data-en="lateral dolly slide" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>สไลด์ข้าง</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="กล้องเคลื่อนขึ้นสูงแบบเครน" data-en="crane up rising above the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🏗</span>เครนขึ้น</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="กล้องมือถือสั่นเล็กน้อยเหมือนคนถ่าย" data-en="subtle handheld movement" onclick="selectFlowChoice(this)"><span class="choice-icon">🤳</span>มือถือสั่นเบา ๆ</button><button class="choice" data-fgroup="cam" data-shot="1" data-value="เปลี่ยนโฟกัสจากหน้าไปหลัง" data-en="rack focus from foreground to background" onclick="selectFlowChoice(this)"><span class="choice-icon">🎯</span>เปลี่ยนโฟกัส</button>
+                </div>
+                <div class="shot-label">สิ่งที่อยู่ในภาพเคลื่อนไหวอย่างไร</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="motion" data-shot="1" data-value="ไม่มีอะไรขยับ ให้ทุกอย่างนิ่งเหมือนภาพต้นฉบับ" data-en="no subject motion, everything stays exactly as in the image" onclick="selectFlowChoice(this)"><span class="choice-icon">🧊</span>ทุกอย่างนิ่ง</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="ขยับเล็กน้อยตามธรรมชาติ เช่น ผม ใบไม้ ผ้า ไหวตามลม" data-en="subtle natural ambient motion only, like hair, leaves or fabric in a light breeze" onclick="selectFlowChoice(this)"><span class="choice-icon">🍃</span>ไหวเบา ๆ ตามลม</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="ควันหรือไอน้ำลอยขึ้นช้า ๆ" data-en="steam or smoke gently rising" onclick="selectFlowChoice(this)"><span class="choice-icon">♨</span>ควัน/ไอน้ำลอย</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="น้ำไหลหรือคลื่นเคลื่อนไหวช้า ๆ" data-en="water flowing or waves moving slowly" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>น้ำไหล</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="สินค้าหมุนช้า ๆ รอบตัวเอง" data-en="the product slowly rotates in place" onclick="selectFlowChoice(this)"><span class="choice-icon">📦</span>สินค้าหมุน</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="คนหันหน้ามาแล้วยิ้มเล็กน้อย" data-en="the person slowly turns toward the camera and smiles slightly" onclick="selectFlowChoice(this)"><span class="choice-icon">🙂</span>คนหันมายิ้ม</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="คนหรือสัตว์เดินไปข้างหน้าช้า ๆ" data-en="the subject walks slowly forward" onclick="selectFlowChoice(this)"><span class="choice-icon">🚶</span>เดินไปข้างหน้า</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="แสงเปลี่ยนช้า ๆ เช่น แดดเคลื่อน ไฟกะพริบ" data-en="light slowly changes, like sun moving or lights flickering" onclick="selectFlowChoice(this)"><span class="choice-icon">💡</span>แสงเปลี่ยน</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="ฝุ่นหรืออนุภาคเล็ก ๆ ลอยในอากาศ" data-en="tiny dust particles floating in the air" onclick="selectFlowChoice(this)"><span class="choice-icon">✨</span>ฝุ่นลอย</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="ฝนตกหรือหิมะโปรยเบา ๆ" data-en="light rain or snow falling" onclick="selectFlowChoice(this)"><span class="choice-icon">🌧</span>ฝน/หิมะ</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="กะพริบตาและหายใจเบา ๆ เหมือนมีชีวิต" data-en="natural blinking and gentle breathing" onclick="selectFlowChoice(this)"><span class="choice-icon">👁</span>กะพริบตา/หายใจ</button><button class="choice" data-fgroup="motion" data-shot="1" data-value="ทุกอย่างในภาพเคลื่อนไหวเต็มที่แบบวิดีโอจริง" data-en="full natural motion of everything in the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🎬</span>เคลื่อนไหวเต็มที่</button>
+                </div>
+                <div class="shot-label">ความเร็ว</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="speed" data-shot="1" data-value="ช้ามาก แทบไม่รู้สึก" data-en="very slow, almost imperceptible" onclick="selectFlowChoice(this)"><span class="choice-icon">🐢</span>ช้ามาก</button><button class="choice" data-fgroup="speed" data-shot="1" data-value="ช้า นุ่มนวล" data-en="slow and smooth" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>ช้า</button><button class="choice" data-fgroup="speed" data-shot="1" data-value="ความเร็วปกติ" data-en="normal speed" onclick="selectFlowChoice(this)"><span class="choice-icon">▶</span>ปกติ</button><button class="choice" data-fgroup="speed" data-shot="1" data-value="เร็ว มีพลัง" data-en="fast and energetic" onclick="selectFlowChoice(this)"><span class="choice-icon">⚡</span>เร็ว</button>
+                </div>
+            </div>
+            <div class="shot-card">
+                <h4><span class="shot-num">2</span>ช็อตที่ 2</h4>
+                <input id="flowImg2" class="large-input" type="text"
+                    placeholder="ภาพนิ่งนี้คืออะไร เช่น ชามก๋วยเตี๋ยวเรือมีไอน้ำ วางบนโต๊ะไม้"
+                    oninput="refreshFlowPrompt()">
+                <div class="shot-label">การเคลื่อนกล้อง</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="cam" data-shot="2" data-value="กล้องนิ่ง ไม่ขยับ" data-en="static locked-off camera" onclick="selectFlowChoice(this)"><span class="choice-icon">🔒</span>กล้องนิ่ง</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="ค่อย ๆ ซูมเข้าหาตัวแบบช้า ๆ" data-en="slow push-in toward the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔍</span>ซูมเข้า</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="ค่อย ๆ ถอยกล้องออกเผยให้เห็นภาพกว้าง" data-en="slow pull-out revealing the wider scene" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>ถอยออก</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="แพนกล้องจากซ้ายไปขวา" data-en="smooth pan from left to right" onclick="selectFlowChoice(this)"><span class="choice-icon">➡</span>แพนซ้าย→ขวา</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="แพนกล้องจากขวาไปซ้าย" data-en="smooth pan from right to left" onclick="selectFlowChoice(this)"><span class="choice-icon">⬅</span>แพนขวา→ซ้าย</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="เงยกล้องขึ้นช้า ๆ" data-en="slow tilt up" onclick="selectFlowChoice(this)"><span class="choice-icon">⬆</span>เงยขึ้น</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="ก้มกล้องลงช้า ๆ" data-en="slow tilt down" onclick="selectFlowChoice(this)"><span class="choice-icon">⬇</span>ก้มลง</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="กล้องหมุนรอบตัวแบบช้า ๆ" data-en="slow orbit around the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔄</span>หมุนรอบ</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="กล้องสไลด์ไปด้านข้าง" data-en="lateral dolly slide" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>สไลด์ข้าง</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="กล้องเคลื่อนขึ้นสูงแบบเครน" data-en="crane up rising above the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🏗</span>เครนขึ้น</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="กล้องมือถือสั่นเล็กน้อยเหมือนคนถ่าย" data-en="subtle handheld movement" onclick="selectFlowChoice(this)"><span class="choice-icon">🤳</span>มือถือสั่นเบา ๆ</button><button class="choice" data-fgroup="cam" data-shot="2" data-value="เปลี่ยนโฟกัสจากหน้าไปหลัง" data-en="rack focus from foreground to background" onclick="selectFlowChoice(this)"><span class="choice-icon">🎯</span>เปลี่ยนโฟกัส</button>
+                </div>
+                <div class="shot-label">สิ่งที่อยู่ในภาพเคลื่อนไหวอย่างไร</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="motion" data-shot="2" data-value="ไม่มีอะไรขยับ ให้ทุกอย่างนิ่งเหมือนภาพต้นฉบับ" data-en="no subject motion, everything stays exactly as in the image" onclick="selectFlowChoice(this)"><span class="choice-icon">🧊</span>ทุกอย่างนิ่ง</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="ขยับเล็กน้อยตามธรรมชาติ เช่น ผม ใบไม้ ผ้า ไหวตามลม" data-en="subtle natural ambient motion only, like hair, leaves or fabric in a light breeze" onclick="selectFlowChoice(this)"><span class="choice-icon">🍃</span>ไหวเบา ๆ ตามลม</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="ควันหรือไอน้ำลอยขึ้นช้า ๆ" data-en="steam or smoke gently rising" onclick="selectFlowChoice(this)"><span class="choice-icon">♨</span>ควัน/ไอน้ำลอย</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="น้ำไหลหรือคลื่นเคลื่อนไหวช้า ๆ" data-en="water flowing or waves moving slowly" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>น้ำไหล</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="สินค้าหมุนช้า ๆ รอบตัวเอง" data-en="the product slowly rotates in place" onclick="selectFlowChoice(this)"><span class="choice-icon">📦</span>สินค้าหมุน</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="คนหันหน้ามาแล้วยิ้มเล็กน้อย" data-en="the person slowly turns toward the camera and smiles slightly" onclick="selectFlowChoice(this)"><span class="choice-icon">🙂</span>คนหันมายิ้ม</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="คนหรือสัตว์เดินไปข้างหน้าช้า ๆ" data-en="the subject walks slowly forward" onclick="selectFlowChoice(this)"><span class="choice-icon">🚶</span>เดินไปข้างหน้า</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="แสงเปลี่ยนช้า ๆ เช่น แดดเคลื่อน ไฟกะพริบ" data-en="light slowly changes, like sun moving or lights flickering" onclick="selectFlowChoice(this)"><span class="choice-icon">💡</span>แสงเปลี่ยน</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="ฝุ่นหรืออนุภาคเล็ก ๆ ลอยในอากาศ" data-en="tiny dust particles floating in the air" onclick="selectFlowChoice(this)"><span class="choice-icon">✨</span>ฝุ่นลอย</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="ฝนตกหรือหิมะโปรยเบา ๆ" data-en="light rain or snow falling" onclick="selectFlowChoice(this)"><span class="choice-icon">🌧</span>ฝน/หิมะ</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="กะพริบตาและหายใจเบา ๆ เหมือนมีชีวิต" data-en="natural blinking and gentle breathing" onclick="selectFlowChoice(this)"><span class="choice-icon">👁</span>กะพริบตา/หายใจ</button><button class="choice" data-fgroup="motion" data-shot="2" data-value="ทุกอย่างในภาพเคลื่อนไหวเต็มที่แบบวิดีโอจริง" data-en="full natural motion of everything in the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🎬</span>เคลื่อนไหวเต็มที่</button>
+                </div>
+                <div class="shot-label">ความเร็ว</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="speed" data-shot="2" data-value="ช้ามาก แทบไม่รู้สึก" data-en="very slow, almost imperceptible" onclick="selectFlowChoice(this)"><span class="choice-icon">🐢</span>ช้ามาก</button><button class="choice" data-fgroup="speed" data-shot="2" data-value="ช้า นุ่มนวล" data-en="slow and smooth" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>ช้า</button><button class="choice" data-fgroup="speed" data-shot="2" data-value="ความเร็วปกติ" data-en="normal speed" onclick="selectFlowChoice(this)"><span class="choice-icon">▶</span>ปกติ</button><button class="choice" data-fgroup="speed" data-shot="2" data-value="เร็ว มีพลัง" data-en="fast and energetic" onclick="selectFlowChoice(this)"><span class="choice-icon">⚡</span>เร็ว</button>
+                </div>
+            </div>
+            <div class="shot-card">
+                <h4><span class="shot-num">3</span>ช็อตที่ 3</h4>
+                <input id="flowImg3" class="large-input" type="text"
+                    placeholder="ภาพนิ่งนี้คืออะไร เช่น ชามก๋วยเตี๋ยวเรือมีไอน้ำ วางบนโต๊ะไม้"
+                    oninput="refreshFlowPrompt()">
+                <div class="shot-label">การเคลื่อนกล้อง</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="cam" data-shot="3" data-value="กล้องนิ่ง ไม่ขยับ" data-en="static locked-off camera" onclick="selectFlowChoice(this)"><span class="choice-icon">🔒</span>กล้องนิ่ง</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="ค่อย ๆ ซูมเข้าหาตัวแบบช้า ๆ" data-en="slow push-in toward the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔍</span>ซูมเข้า</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="ค่อย ๆ ถอยกล้องออกเผยให้เห็นภาพกว้าง" data-en="slow pull-out revealing the wider scene" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>ถอยออก</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="แพนกล้องจากซ้ายไปขวา" data-en="smooth pan from left to right" onclick="selectFlowChoice(this)"><span class="choice-icon">➡</span>แพนซ้าย→ขวา</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="แพนกล้องจากขวาไปซ้าย" data-en="smooth pan from right to left" onclick="selectFlowChoice(this)"><span class="choice-icon">⬅</span>แพนขวา→ซ้าย</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="เงยกล้องขึ้นช้า ๆ" data-en="slow tilt up" onclick="selectFlowChoice(this)"><span class="choice-icon">⬆</span>เงยขึ้น</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="ก้มกล้องลงช้า ๆ" data-en="slow tilt down" onclick="selectFlowChoice(this)"><span class="choice-icon">⬇</span>ก้มลง</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="กล้องหมุนรอบตัวแบบช้า ๆ" data-en="slow orbit around the subject" onclick="selectFlowChoice(this)"><span class="choice-icon">🔄</span>หมุนรอบ</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="กล้องสไลด์ไปด้านข้าง" data-en="lateral dolly slide" onclick="selectFlowChoice(this)"><span class="choice-icon">↔</span>สไลด์ข้าง</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="กล้องเคลื่อนขึ้นสูงแบบเครน" data-en="crane up rising above the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🏗</span>เครนขึ้น</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="กล้องมือถือสั่นเล็กน้อยเหมือนคนถ่าย" data-en="subtle handheld movement" onclick="selectFlowChoice(this)"><span class="choice-icon">🤳</span>มือถือสั่นเบา ๆ</button><button class="choice" data-fgroup="cam" data-shot="3" data-value="เปลี่ยนโฟกัสจากหน้าไปหลัง" data-en="rack focus from foreground to background" onclick="selectFlowChoice(this)"><span class="choice-icon">🎯</span>เปลี่ยนโฟกัส</button>
+                </div>
+                <div class="shot-label">สิ่งที่อยู่ในภาพเคลื่อนไหวอย่างไร</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="motion" data-shot="3" data-value="ไม่มีอะไรขยับ ให้ทุกอย่างนิ่งเหมือนภาพต้นฉบับ" data-en="no subject motion, everything stays exactly as in the image" onclick="selectFlowChoice(this)"><span class="choice-icon">🧊</span>ทุกอย่างนิ่ง</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="ขยับเล็กน้อยตามธรรมชาติ เช่น ผม ใบไม้ ผ้า ไหวตามลม" data-en="subtle natural ambient motion only, like hair, leaves or fabric in a light breeze" onclick="selectFlowChoice(this)"><span class="choice-icon">🍃</span>ไหวเบา ๆ ตามลม</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="ควันหรือไอน้ำลอยขึ้นช้า ๆ" data-en="steam or smoke gently rising" onclick="selectFlowChoice(this)"><span class="choice-icon">♨</span>ควัน/ไอน้ำลอย</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="น้ำไหลหรือคลื่นเคลื่อนไหวช้า ๆ" data-en="water flowing or waves moving slowly" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>น้ำไหล</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="สินค้าหมุนช้า ๆ รอบตัวเอง" data-en="the product slowly rotates in place" onclick="selectFlowChoice(this)"><span class="choice-icon">📦</span>สินค้าหมุน</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="คนหันหน้ามาแล้วยิ้มเล็กน้อย" data-en="the person slowly turns toward the camera and smiles slightly" onclick="selectFlowChoice(this)"><span class="choice-icon">🙂</span>คนหันมายิ้ม</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="คนหรือสัตว์เดินไปข้างหน้าช้า ๆ" data-en="the subject walks slowly forward" onclick="selectFlowChoice(this)"><span class="choice-icon">🚶</span>เดินไปข้างหน้า</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="แสงเปลี่ยนช้า ๆ เช่น แดดเคลื่อน ไฟกะพริบ" data-en="light slowly changes, like sun moving or lights flickering" onclick="selectFlowChoice(this)"><span class="choice-icon">💡</span>แสงเปลี่ยน</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="ฝุ่นหรืออนุภาคเล็ก ๆ ลอยในอากาศ" data-en="tiny dust particles floating in the air" onclick="selectFlowChoice(this)"><span class="choice-icon">✨</span>ฝุ่นลอย</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="ฝนตกหรือหิมะโปรยเบา ๆ" data-en="light rain or snow falling" onclick="selectFlowChoice(this)"><span class="choice-icon">🌧</span>ฝน/หิมะ</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="กะพริบตาและหายใจเบา ๆ เหมือนมีชีวิต" data-en="natural blinking and gentle breathing" onclick="selectFlowChoice(this)"><span class="choice-icon">👁</span>กะพริบตา/หายใจ</button><button class="choice" data-fgroup="motion" data-shot="3" data-value="ทุกอย่างในภาพเคลื่อนไหวเต็มที่แบบวิดีโอจริง" data-en="full natural motion of everything in the scene" onclick="selectFlowChoice(this)"><span class="choice-icon">🎬</span>เคลื่อนไหวเต็มที่</button>
+                </div>
+                <div class="shot-label">ความเร็ว</div>
+                <div class="choice-grid">
+                    <button class="choice" data-fgroup="speed" data-shot="3" data-value="ช้ามาก แทบไม่รู้สึก" data-en="very slow, almost imperceptible" onclick="selectFlowChoice(this)"><span class="choice-icon">🐢</span>ช้ามาก</button><button class="choice" data-fgroup="speed" data-shot="3" data-value="ช้า นุ่มนวล" data-en="slow and smooth" onclick="selectFlowChoice(this)"><span class="choice-icon">🌊</span>ช้า</button><button class="choice" data-fgroup="speed" data-shot="3" data-value="ความเร็วปกติ" data-en="normal speed" onclick="selectFlowChoice(this)"><span class="choice-icon">▶</span>ปกติ</button><button class="choice" data-fgroup="speed" data-shot="3" data-value="เร็ว มีพลัง" data-en="fast and energetic" onclick="selectFlowChoice(this)"><span class="choice-icon">⚡</span>เร็ว</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">2</span><span class="step-title">ความยาวแต่ละช็อต</span></div>
+            <p class="step-help">Flow สร้างคลิปได้ครั้งละประมาณ 8 วินาที</p>
+            <div class="choice-grid">
+                <button class="choice" data-fgroup="duration" data-value="4 วินาที" data-en="4 seconds" onclick="selectFlowChoice(this)"><span class="choice-icon">⏱</span>4 วินาที</button><button class="choice" data-fgroup="duration" data-value="6 วินาที" data-en="6 seconds" onclick="selectFlowChoice(this)"><span class="choice-icon">⏱</span>6 วินาที</button><button class="choice" data-fgroup="duration" data-value="8 วินาที" data-en="8 seconds" onclick="selectFlowChoice(this)"><span class="choice-icon">⏱</span>8 วินาที</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">3</span><span class="step-title">สไตล์ภาพและแสงรวมของทั้ง 3 ช็อต</span></div>
+            <p class="step-help">ใช้ค่าเดียวกันทุกช็อต เพื่อให้ตัดต่อกันแล้วดูเป็นวิดีโอเดียวกัน</p>
+            <div class="choice-grid">
+                <button class="choice" data-fgroup="style" data-value="เหมือนภาพถ่ายจริง แบบภาพยนตร์" data-en="photorealistic, cinematic film look" onclick="selectFlowChoice(this)"><span class="choice-icon">🎬</span>ภาพยนตร์</button><button class="choice" data-fgroup="style" data-value="เหมือนภาพถ่ายจริง แบบสารคดี" data-en="photorealistic, documentary look" onclick="selectFlowChoice(this)"><span class="choice-icon">📹</span>สารคดี</button><button class="choice" data-fgroup="style" data-value="โฆษณาสินค้า สะอาด คมชัด" data-en="clean commercial product-shot look" onclick="selectFlowChoice(this)"><span class="choice-icon">🏷</span>โฆษณา</button><button class="choice" data-fgroup="style" data-value="นุ่มฝัน โทนอบอุ่น" data-en="soft dreamy look with warm tones" onclick="selectFlowChoice(this)"><span class="choice-icon">🌅</span>นุ่มฝัน</button><button class="choice" data-fgroup="style" data-value="โทนเย็น มืด ดูลึกลับ" data-en="cool moody low-key look" onclick="selectFlowChoice(this)"><span class="choice-icon">🌑</span>โทนเย็น มืด</button><button class="choice" data-fgroup="style" data-value="สดใส สีสันจัด" data-en="bright vivid colorful look" onclick="selectFlowChoice(this)"><span class="choice-icon">🌈</span>สดใส</button><button class="choice" data-fgroup="style" data-value="แสงธรรมชาติ ตามภาพต้นฉบับ" data-en="natural lighting matching the source image" onclick="selectFlowChoice(this)"><span class="choice-icon">☀</span>ตามภาพต้นฉบับ</button><button class="choice" data-fgroup="style" data-value="ภาพวาด/แอนิเมชัน ตามสไตล์ภาพต้นฉบับ" data-en="keep the illustrated/animated style of the source image" onclick="selectFlowChoice(this)"><span class="choice-icon">🎨</span>ภาพวาด/แอนิเมชัน</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div>
+                <span class="step-number">4</span>
+                <span class="step-title">สิ่งที่ห้ามเปลี่ยน</span>
+                <span class="multi-hint">เลือกได้หลายข้อ</span>
+            </div>
+            <p class="step-help">ส่วนนี้สำคัญมาก ช่วยให้ AI ไม่เปลี่ยนหน้าตา สินค้า หรือองค์ประกอบของภาพต้นฉบับ</p>
+            <div class="choice-grid">
+                <button class="choice" data-fgroup="lock" data-multi="1" data-value="คงหน้าตาและรูปร่างของคนให้เหมือนภาพต้นฉบับ" data-en="keep the person's face and body identical to the reference image" onclick="selectFlowChoice(this)"><span class="choice-icon">🙂</span>หน้าตาคน</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="คงรูปทรง สี และโลโก้ของสินค้าให้ตรงต้นฉบับ" data-en="keep the product's shape, colors and logo exactly as in the image" onclick="selectFlowChoice(this)"><span class="choice-icon">📦</span>สินค้า/โลโก้</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="คงองค์ประกอบและตำแหน่งของสิ่งต่าง ๆ ในภาพ" data-en="keep the composition and placement of all elements" onclick="selectFlowChoice(this)"><span class="choice-icon">🖼</span>องค์ประกอบภาพ</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="ห้ามเพิ่มคน วัตถุ หรือข้อความใหม่เข้ามา" data-en="do not add new people, objects or text" onclick="selectFlowChoice(this)"><span class="choice-icon">🚫</span>ห้ามเพิ่มของใหม่</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="ห้ามบิดเบี้ยว ละลาย หรือเปลี่ยนรูปทรง (no morphing)" data-en="no morphing, warping or distortion" onclick="selectFlowChoice(this)"><span class="choice-icon">🧱</span>ห้ามบิดเบี้ยว</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="คงโทนสีและแสงเดิมของภาพ" data-en="keep the original color palette and lighting" onclick="selectFlowChoice(this)"><span class="choice-icon">🎨</span>สีและแสงเดิม</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="ห้ามตัดสลับฉาก ให้เป็นช็อตเดียวต่อเนื่อง" data-en="single continuous shot, no cuts or scene changes" onclick="selectFlowChoice(this)"><span class="choice-icon">🎞</span>ช็อตเดียวต่อเนื่อง</button><button class="choice" data-fgroup="lock" data-multi="1" data-value="พื้นหลังต้องคงเดิม ไม่เปลี่ยนสถานที่" data-en="background stays the same, no location change" onclick="selectFlowChoice(this)"><span class="choice-icon">🏠</span>พื้นหลังเดิม</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">5</span><span class="step-title">ภาษาของ Prompt</span></div>
+            <p class="step-help">Flow / Veo เข้าใจภาษาอังกฤษได้แม่นยำกว่า แนะนำให้ใช้อังกฤษ</p>
+            <div class="choice-grid" style="grid-template-columns:repeat(2,1fr);">
+                <button class="choice" data-fgroup="lang" data-value="en" onclick="selectFlowChoice(this)"><span class="choice-icon">🇬🇧</span>อังกฤษ (แนะนำ)</button>
+                <button class="choice" data-fgroup="lang" data-value="th" onclick="selectFlowChoice(this)"><span class="choice-icon">🇹🇭</span>ไทย</button>
+            </div>
+        </div>
+
+        <div class="button-row gen-row">
+            <button class="primary-btn" onclick="generateFlowPrompt()">สร้าง Prompt ทั้ง 3 ช็อต</button>
+            <button class="secondary-btn" onclick="flowExample()">ลองตัวอย่าง</button>
+            <button class="danger-btn" onclick="clearFlowBuilder()">เริ่มใหม่</button>
+        </div>
+
+        <div id="flowResult" class="result" style="display:none;">
+            <h3>Prompt สำหรับ Flow พร้อมแล้ว</h3>
+            <p>วางทีละช็อต: อัปโหลดภาพนิ่งของช็อตนั้นเป็นเฟรมแรก แล้ววาง Prompt ของช็อตเดียวกัน
+               <span style="color:var(--muted);font-size:16px;">(เปลี่ยนตัวเลือกด้านบนได้ตลอด ข้อความจะอัปเดตให้เอง)</span></p>
+            <div id="flowShots"></div>
+            <p id="flowCopyMessage" style="color:var(--green);font-weight:bold;margin-top:5px;min-height:28px;"></p>
+            <div id="flowAllOutput" style="display:none;"></div>
+
+            <div class="open-app-row">
+                <p>ใน Google Flow: สร้างทีละช็อต (อัปโหลดภาพ → วาง Prompt → Generate) ทำครบ 3 ช็อตแล้วดาวน์โหลดมาสั่งตัดใน CapCut</p>
+                <div class="button-row" style="margin-top:0;">
+                    <a class="app-btn flow" href="https://labs.google/flow" target="_blank" rel="noopener">
+                        <span class="app-logo">▶</span>เปิด Google Flow
+                    </a>
+                    <button class="secondary-btn" onclick="copyText('flowAllOutput','flowCopyMessage','คัดลอกทั้ง 3 ช็อตเรียบร้อยแล้ว (เก็บไว้เป็นบันทึก)')">คัดลอกทั้งหมดเก็บไว้</button>
+                    <button class="app-btn capcut" onclick="goToCapcutFromFlow()">
+                        <span class="app-logo">✂</span>ไปต่อ: สั่งตัดใน CapCut →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<aside class="related"><h3>ไปต่อที่เกี่ยวข้อง</h3><div class="related-grid"><a class="rel-card" href="page-capcut.html"><div class="ic cat-video">✂</div><div><b>สั่งตัดวิดีโอใน CapCut</b><span>สร้าง Prompt สั้น ๆ สำหรับฟีเจอร์ตัดอัตโนมัติด้วย AI พร้อมนั</span></div></a><a class="rel-card" href="page-image.html"><div class="ic cat-create">✨</div><div><b>สร้างภาพด้วย AI</b><span>ตอบคำถามทีละข้อ แล้วรับ Prompt สำหรับให้ AI สร้างภาพ พร้อมคล</span></div></a><a class="rel-card" href="page-post.html"><div class="ic cat-ai">✍</div><div><b>เขียนโพสต์โซเชียล</b><span>ขายของ เล่าเรื่อง แจ้งข่าว ให้ AI เขียนโพสต์มาให้เลือก 3 แบบ</span></div></a></div></aside>
+
+<footer>
+    <p style="font-size:20px;font-weight:bold;color:#ffffff;">คัมภีร์ใช้ AI</p>
+    <p>ออกแบบให้ทุกคนสามารถเริ่มต้นใช้งาน AI ได้ง่าย</p>
+    <p style="opacity:.8;font-size:14px;margin-top:12px;">หมายเหตุ: คำสั่งในเว็บนี้เป็นคำสำคัญสำหรับช่วยเขียน Prompt ไม่ใช่คำสั่งที่ AI ทุกระบบรองรับโดยตรง</p>
+</footer>
+<div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <hr>
+        <h3>ใช้เมื่อไหร่?</h3>
+        <p id="modalUse"></p>
+        <h3>ตัวอย่าง</h3>
+        <div id="modalExample" class="prompt-box"></div>
+        <div class="button-row">
+            <button class="primary-btn" onclick="useCommand()">ใช้คำสั่งนี้</button>
+        </div>
+    </div>
+</div>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt="ภาพขยาย"></div>
+<script src="app.js"></script>
+</body>
+</html>

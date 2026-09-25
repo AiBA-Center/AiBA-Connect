@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>จอกลาง — เกมปิดท้ายการอบรม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c1a30;--surface:#16294a;--line:#2a4770;--text:#eaf2ff;--muted:#9fb4d3;--cyan:#4fd1ff;--amber:#ffb454;--green:#5ee6a0;--pink:#ff8fb1;--head:"Kanit","Noto Sans Thai",Tahoma,sans-serif;--body:"Sarabun","Noto Sans Thai",Tahoma,sans-serif}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:20px;overflow:hidden;
+background-image:radial-gradient(1200px 600px at 85% -10%,rgba(79,209,255,.16),transparent 60%),radial-gradient(900px 500px at -10% 30%,rgba(183,155,255,.12),transparent 60%)}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:14px 26px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--head);font-size:24px;font-weight:600}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#4fd1ff,#3c7cff);color:#06172c;display:flex;align-items:center;justify-content:center;font-weight:700}
+.bar button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:30px;padding:9px 16px;cursor:pointer;font-size:16px;margin-left:8px}
+.bar button.primary{background:var(--cyan);color:#06172c;border-color:var(--cyan);font-weight:700}
+.live{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:15px}.live i{width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.2}}
+.grid{display:grid;grid-template-columns:1fr 1.2fr;gap:22px;padding:22px 26px;height:calc(100vh - 74px - 92px)}
+.host{display:flex;align-items:center;gap:14px;padding:14px 26px;border-bottom:1px solid var(--line);background:rgba(22,41,74,.55);min-height:92px;flex-wrap:wrap}
+.host .phase{font-family:var(--head);font-size:20px;font-weight:600;min-width:220px}
+.host .phase small{display:block;color:var(--muted);font-size:14px;font-weight:400}
+.host button{border:none;border-radius:14px;padding:14px 22px;font-size:19px;font-weight:700;font-family:var(--head);cursor:pointer;color:#fff}
+.host .go{background:linear-gradient(135deg,#26890c,#1e8f5a)}.host .next{background:linear-gradient(135deg,#4fd1ff,#3c7cff);color:#06172c}.host .end{background:linear-gradient(135deg,#e21b3c,#b3142f)}.host .reset{background:var(--surface);border:1px solid var(--line)}
+.host button:disabled{opacity:.4;cursor:default}
+.host .cnt{margin-left:auto;color:var(--muted);font-size:16px}
+.qbox{display:none;padding:0 26px 14px}
+.qbox.on{display:block}
+.qcard{background:rgba(22,41,74,.85);border:1px solid var(--line);border-radius:22px;padding:18px 24px;display:grid;grid-template-columns:130px 1fr;gap:20px;align-items:center}
+.qcard .big-timer{font-family:var(--head);font-size:70px;font-weight:700;color:var(--cyan);text-align:center;line-height:1}
+.qcard .big-timer.low{color:#ff8585}
+.qcard .qt{font-family:var(--head);font-size:26px;font-weight:600;margin-bottom:10px}
+.qcard .qo{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qcard .qo div{border-radius:12px;padding:10px 14px;color:#fff;font-size:18px;display:flex;gap:8px;align-items:center;opacity:.95}
+.qcard .qo .c0{background:#e21b3c}.qcard .qo .c1{background:#1368ce}.qcard .qo .c2{background:#d89e00}.qcard .qo .c3{background:#26890c}
+.qcard .qo div.dim{opacity:.25}.qcard .qo div.win{outline:4px solid #ffd93d}
+.qcard .ans{color:var(--muted);font-size:15px;margin-top:8px}
+.qcard .reveal{margin-top:8px;width:100%;border:none;border-radius:10px;padding:8px;background:#ffd93d;color:#2b1d10;font-weight:700;font-family:var(--head);cursor:pointer;font-size:16px}
+@media (max-width:1000px){.grid{height:auto}}
+.panel{background:rgba(22,41,74,.7);border:1px solid var(--line);border-radius:24px;padding:22px;display:flex;flex-direction:column;min-height:0}
+.panel h2{font-family:var(--head);font-weight:600;font-size:26px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.count{margin-left:auto;font-size:16px;color:var(--muted);font-weight:400}
+.podium{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:end;margin-bottom:14px}
+.pod{text-align:center;border-radius:18px;padding:14px 8px 10px;background:rgba(12,26,48,.6);border:1px solid var(--line)}
+.pod.p1{background:linear-gradient(180deg,rgba(255,213,74,.25),rgba(12,26,48,.6));border-color:#ffd54a}
+.pod.p2{order:2}.pod.p3{order:4}.pod.p4{order:1}.pod.p5{order:5}
+.pod.p1{order:3}
+.pod.p4 .av,.pod.p5 .av{width:64px;height:64px;font-size:30px}
+.pod.p4 .name,.pod.p5 .name{font-size:17px}.pod.p4 .pts,.pod.p5 .pts{font-size:16px}
+.pod .st{font-size:13px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .st.playing{color:var(--green)}
+.row .st{font-size:14px;color:var(--muted);width:120px;text-align:right;white-space:nowrap}
+.row .st.playing{color:var(--green)}
+.pod .av{width:84px;height:84px;border-radius:50%;margin:auto;border:4px solid var(--line);background:var(--surface);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:40px}
+.pod.p1 .av{width:110px;height:110px;border-color:#ffd54a;box-shadow:0 0 30px rgba(255,213,74,.5)}
+.pod.p2 .av{border-color:#cfd8e3}.pod.p3 .av{border-color:#d29a5a}
+.pod .av img{width:100%;height:100%;object-fit:cover}
+.pod .medal{font-size:34px;line-height:1;margin-top:-18px}
+.pod .name{font-family:var(--head);font-weight:600;font-size:22px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .pts{color:var(--cyan);font-weight:700;font-size:20px}
+.pod.hidden-rank .name,.pod.hidden-rank .pts{filter:blur(8px)}
+.list{overflow:auto;flex:1;min-height:0}
+.row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:rgba(12,26,48,.5);margin-bottom:8px;border:1px solid transparent}
+.row.new{border-color:var(--green);animation:pop .5s}
+.row .rk{width:36px;text-align:center;font-family:var(--head);font-weight:700;color:var(--muted)}
+.row .av{width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+.row .av img{width:100%;height:100%;object-fit:cover}
+.row .nm{flex:1;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .pt{color:var(--cyan);font-weight:700}
+.row .tm{color:var(--muted);font-size:15px;width:60px;text-align:right}
+.wall{overflow:auto;flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;align-content:start}
+.note{background:#fff8dc;color:#2b1d10;border-radius:18px;padding:14px 16px;position:relative;box-shadow:0 10px 24px rgba(0,0,0,.35);animation:pop .5s;transform:rotate(var(--r,0deg))}
+.note:nth-child(3n){background:#e6f7ff}.note:nth-child(3n+1){background:#ffe9f1}.note:nth-child(4n){background:#eaffea}
+.note .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.note .av{width:40px;height:40px;border-radius:50%;overflow:hidden;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:20px;flex:none}
+.note .av img{width:100%;height:100%;object-fit:cover}
+.note .nm{font-family:var(--head);font-weight:600;font-size:17px}
+.note .md{margin-left:auto;font-size:26px}
+.note .tx{font-size:18px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
+.note.new{outline:3px solid var(--green)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1) rotate(var(--r,0deg));opacity:1}}
+.empty{color:var(--muted);text-align:center;padding:40px 10px;font-size:19px}
+.err{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#7a1010;color:#fff;padding:10px 18px;border-radius:12px;display:none;font-size:16px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.confetti i{position:absolute;top:-20px;width:14px;height:22px;border-radius:3px;animation:fall 3.4s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+.big{position:fixed;inset:0;background:rgba(6,15,30,.94);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:40;text-align:center}
+.big h1{font-family:var(--head);font-size:56px;margin:0;color:var(--amber)}
+.big .av{width:220px;height:220px;border-radius:50%;border:8px solid #ffd54a;overflow:hidden;box-shadow:0 0 60px rgba(255,213,74,.6);display:flex;align-items:center;justify-content:center;font-size:100px;background:var(--surface)}
+.big .av img{width:100%;height:100%;object-fit:cover}
+.big .nm{font-family:var(--head);font-size:64px;font-weight:700}.big .pt{font-size:36px;color:var(--cyan);font-weight:700}
+.big .hint{color:var(--muted);font-size:18px;margin-top:20px}
+@media (max-width:1000px){.grid{grid-template-columns:1fr;height:auto}body{overflow:auto}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="brand"><div class="logo">AI</div>เกมปิดท้ายการอบรม <span class="live"><i></i><span id="lastUpd">กำลังเชื่อมต่อ...</span></span></div>
+  <div>
+    <button onclick="refresh(true)">รีเฟรช</button>
+    <button onclick="toggleHide()" id="hideBtn">ซ่อนชื่ออันดับ 1-3</button>
+    <button class="primary" onclick="announce()">🏆 ประกาศผล</button>
+    <button onclick="document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()">⛶ เต็มจอ</button>
+  </div>
+</div>
+<div class="host" id="host">
+  <div class="phase" id="phaseTxt">กำลังเชื่อมต่อ...<small id="phaseSub"></small></div>
+  <button class="go" id="btnStart" onclick="control('start')">▶ เริ่มข้อ 1</button>
+  <button class="next" id="btnNext" onclick="control('next')">ข้อถัดไป →</button>
+  <button class="end" id="btnEnd" onclick="control('end')">จบเกม</button>
+  <button class="reset" id="btnReset" onclick="if(confirm('เริ่มรอบใหม่? กระดานคะแนนจะเริ่มจากศูนย์ (ข้อมูลเดิมยังอยู่ในชีต)')) control('reset')">↺ เริ่มรอบใหม่</button>
+  <span class="cnt" id="answeredCnt"></span>
+</div>
+<div class="qbox" id="qbox"><div class="qcard"><div><div class="big-timer" id="bigTimer">0</div><div style="text-align:center;color:var(--muted);font-size:14px">ตอบแล้ว (คน)</div><button class="reveal" onclick="revealAnswer()">เฉลย</button></div><div><div class="qt" id="qTxt"></div><div class="qo" id="qOpts"></div><div class="ans" id="qAns"></div></div></div></div>
+<div class="grid">
+  <section class="panel">
+    <h2>🏁 อันดับคะแนนควิซ <span style="font-size:14px;color:var(--green);font-weight:400">● สด อัปเดตทุก 3 วิ</span> <span class="count" id="cntQuiz"></span></h2>
+    <div class="podium" id="podium"></div>
+    <div class="list" id="list"></div>
+  </section>
+  <section class="panel">
+    <h2>💌 ความรู้สึกจากผู้เข้าอบรม <span class="count" id="cntRev"></span></h2>
+    <div class="wall" id="wall"></div>
+  </section>
+</div>
+<div class="err" id="err"></div>
+<div class="confetti" id="confetti"></div>
+<div class="big" id="big" onclick="announce()"></div>
+
+<script>
+let CFG = null;
+(function () {
+  const m = location.hash.match(/cfg=([^&]+)/);
+  if (m) { try { CFG = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1]))))); localStorage.setItem("kampeeGame:cfg", JSON.stringify(CFG)); } catch (e) {} }
+  if (!CFG) { try { CFG = JSON.parse(localStorage.getItem("kampeeGame:cfg")); } catch (e) {} }
+})();
+
+const QUESTIONS = [
+  { q: "\"Prompt\" คืออะไร?", o: ["ชื่อยี่ห้อมือถือ", "คำสั่งหรือคำอธิบายที่เราบอก AI ว่าอยากได้อะไร", "โปรแกรมแต่งรูป", "รหัสผ่านเข้าแอป"], a: 1 },
+  { q: "อยากให้ AI วาดภาพได้ตรงใจ ควรบอกอะไรบ้าง?", o: ["บอกแค่ชื่อของ เช่น \"รถ\"", "บอกวัตถุ สไตล์ มุมมอง แสง และพื้นหลัง", "พิมพ์ภาษาอังกฤษเท่านั้น", "บอกว่า \"สวย ๆ\" ก็พอ"], a: 1 },
+  { q: "GEM ใน Gemini คืออะไร?", o: ["อัญมณีสะสมแต้ม", "ผู้ช่วย AI ที่เราตั้งบทบาทและกฎให้ทำงานเฉพาะเรื่อง", "เกมในมือถือ", "แอปตัดต่อวิดีโอ"], a: 1 },
+  { q: "จะทำภาพนิ่งให้กลายเป็นวิดีโอ ต้องบอก AI ให้ชัด 3 อย่างคือ?", o: ["ราคา ยี่ห้อ รุ่น", "กล้องขยับยังไง อะไรในภาพขยับ อะไรห้ามเปลี่ยน", "ชื่อ ที่อยู่ เบอร์โทร", "วัน เดือน ปี"], a: 1 },
+  { q: "Prompt สั่งตัดวิดีโออัตโนมัติใน CapCut ควรเป็นแบบไหน?", o: ["ยาวมาก ๆ อธิบายทุกวินาที", "สั้น กระชับ บอกสไตล์ ความยาว และอารมณ์", "เป็นบทกวี", "ไม่ต้องพิมพ์อะไรเลย"], a: 1 },
+  { q: "ได้ SMS ว่า \"พัสดุค้างภาษี 38 บาท กดลิงก์เพื่อชำระ\" ควรทำอย่างไร?", o: ["กดจ่ายเลย แค่ 38 บาท", "ตอบกลับถามว่าพัสดุอะไร", "ไม่กดลิงก์ ลบทิ้ง ถ้าสงสัยโทรไปรษณีย์เอง", "ส่งต่อให้เพื่อนช่วยจ่าย"], a: 2 },
+  { q: "มีคนโทรมาขอรหัส OTP 6 หลักที่เพิ่งได้รับ แปลว่า?", o: ["เป็นเจ้าหน้าที่ธนาคารแน่นอน", "เป็นมิจฉาชีพ 100% ห้ามบอกเด็ดขาด", "บอกได้ถ้าเขาพูดสุภาพ", "บอกแค่ 3 ตัวแรกก็พอ"], a: 1 },
+  { q: "คำสั่ง (System Prompt) ของ GEM ที่ดี ควรมีอะไรบ้าง?", o: ["พิมพ์แค่ \"ช่วยฉันด้วย\" สั้น ๆ พอ", "บอกบทบาท หน้าที่ กลุ่มผู้ใช้ น้ำเสียง กฎที่ต้องทำ และสิ่งห้ามทำ", "ใส่แต่ชื่อร้านกับเบอร์โทร", "เขียนเป็นภาษาอังกฤษเท่านั้นถึงจะใช้ได้"], a: 1 },
+  { q: "LINE จากบัญชีใหม่บอกว่า \"แม่ หนูเปลี่ยนเบอร์ ขอยืมเงินด่วน\" ควรทำอย่างไร?", o: ["โอนทันที ลูกเดือดร้อน", "โทรหาลูกที่เบอร์เดิมหรือถามคนในครอบครัวก่อน", "ถามในแชทว่าเกิดวันไหน", "โอนครึ่งเดียวก่อน"], a: 1 },
+  { q: "ให้ AI อธิบายเรื่องยาหรืออาการ แล้วควรทำอย่างไรต่อ?", o: ["เชื่อทั้งหมด ไม่ต้องถามใคร", "ใช้เป็นด่านแรกให้เข้าใจ แล้วยืนยันกับหมอหรือเภสัชกรจริง", "ซื้อยาตามที่ AI บอกทันที", "เลิกไปหาหมอ"], a: 1 }
+];
+const SHAPES = ["▲", "◆", "●", "■"], TIME_LIMIT = 20;
+let seen = new Set(), hideTop = false, lastRows = { quiz: [], review: [] }, state = null, clockOffset = 0, allData = [];
+
+function control(action) {
+  if (!CFG || !CFG.key) { showErr("ลิงก์จอกลางนี้ไม่มีรหัสแอดมิน กรุณาสร้างลิงก์ใหม่จากหน้า setup.html"); return; }
+  document.querySelectorAll(".host button").forEach(b => b.disabled = true);
+  fetch(CFG.api, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ type: "control", action, key: CFG.key }) })
+    .then(r => r.json()).then(j => { if (!j.ok) throw new Error(j.error); state = j.state; clockOffset = state.now - Date.now(); renderHost(); refresh(true); })
+    .catch(e => { showErr("สั่งงานไม่สำเร็จ: " + (e.message || "") + " (ต้อง Deploy โค้ดเวอร์ชัน 2 และรหัสแอดมินต้องตรงกับที่ใช้ครั้งแรก)"); renderHost(); });
+}
+function renderHost() {
+  const st = state; if (!st) return;
+  const ph = document.getElementById("phaseTxt"), sub = document.getElementById("phaseSub");
+  const bStart = document.getElementById("btnStart"), bNext = document.getElementById("btnNext"), bEnd = document.getElementById("btnEnd"), bReset = document.getElementById("btnReset");
+  [bStart, bNext, bEnd, bReset].forEach(b => b.disabled = false);
+  const qbox = document.getElementById("qbox");
+  if (st.phase === "lobby") {
+    ph.firstChild.textContent = "ห้องรอ — รอบที่ " + st.round; sub.textContent = "ให้ทุกคนสแกน QR แล้วกด 'เข้าห้องควิซ' ก่อน แล้วกด ▶ เริ่มข้อ 1";
+    bNext.disabled = true; bEnd.disabled = true; qbox.classList.remove("on");
+  } else if (st.phase === "question") {
+    const last = st.qi >= QUESTIONS.length - 1;
+    ph.firstChild.textContent = `กำลังเล่น ข้อ ${st.qi + 1} / ${QUESTIONS.length}`; sub.textContent = last ? "ข้อสุดท้ายแล้ว รอทุกคนตอบ กด เฉลย แล้วกด จบเกม" : "รอทุกคนตอบ (ดูตัวนับ) กด เฉลย แล้วกด ข้อถัดไป";
+    bStart.disabled = true; bNext.disabled = last; qbox.classList.add("on"); renderQuestion();
+  } else if (st.phase === "end") {
+    ph.firstChild.textContent = "จบเกมแล้ว 🎉"; sub.textContent = "กด 🏆 ประกาศผล หรือ ↺ เริ่มรอบใหม่";
+    bStart.disabled = true; bNext.disabled = true; bEnd.disabled = true; qbox.classList.remove("on");
+  }
+}
+const av = p => p && p.startsWith("data:image") ? `<img src="${p}">` : "🙂";
+const esc = t => (t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+
+function renderQuestion() {
+  const Q = QUESTIONS[state.qi]; if (!Q) return;
+  document.getElementById("qTxt").textContent = `ข้อ ${state.qi + 1}. ${Q.q}`;
+  document.getElementById("qOpts").innerHTML = Q.o.map((o, i) => `<div class="c${i}" data-i="${i}"><b>${SHAPES[i]}</b> ${esc(o)}</div>`).join("");
+  document.getElementById("qAns").textContent = "";
+  document.getElementById("bigTimer").textContent = "0";
+}
+function revealAnswer() {
+  const Q = QUESTIONS[state.qi]; if (!Q) return;
+  document.querySelectorAll("#qOpts div").forEach(d => { const i = Number(d.dataset.i); d.classList.toggle("win", i === Q.a); d.classList.toggle("dim", i !== Q.a); });
+  document.getElementById("qAns").textContent = "คำตอบที่ถูก: " + Q.o[Q.a];
+}
+async function refresh(manual) {
+  if (!CFG || !CFG.api) { showErr("ยังไม่มีการตั้งค่า เปิดลิงก์จอกลางที่ได้จากหน้า setup.html"); return; }
+  try {
+    const res = await fetch(CFG.api + "?_=" + Date.now(), { cache: "no-store" });
+    const j = await res.json();
+    if (!j.ok) throw new Error(j.error);
+    if (j.state) { const prevPhase = state && state.phase, prevQi = state && state.qi; state = j.state; clockOffset = state.now - Date.now(); if (prevPhase !== state.phase || prevQi !== state.qi) renderHost(); }
+    const roundTag = state ? "r" + state.round : null;
+    allData = j.rows;
+    const data = j.rows.filter(r => !roundTag || String(r.type) === "review" || String(r.mood || "") === roundTag).map(r => ({ id: "r" + r.id, ts: r.ts, type: String(r.type || "").trim(), name: String(r.name || "").trim() || "ไม่ระบุชื่อ", score: Number(r.score) || 0, time: Number(r.time) || 0, msg: String(r.message || "").trim(), photo: String(r.photo || "").trim(), mood: String(r.mood || "").trim() }));
+    // รวม progress (ระหว่างเล่น) และ quiz (จบแล้ว) เอาแถวล่าสุดของแต่ละชื่อ ถ้าจบแล้วให้ยึดผลจบ
+    const quiz = {};
+    data.filter(d => d.type === "quiz" || d.type === "progress").forEach(d => {
+      const k = d.name.toLowerCase(); const cur = quiz[k];
+      const idn = Number(d.id.slice(1));
+      if (!cur) { quiz[k] = d; return; }
+      if (cur.type === "quiz" && d.type !== "quiz") return;               // จบแล้ว ไม่ให้ progress ทับ
+      if (d.type === "quiz" && cur.type !== "quiz") { quiz[k] = d; return; }
+      if (idn > Number(cur.id.slice(1))) quiz[k] = d;                       // ล่าสุดชนะ
+    });
+    lastRows.quiz = Object.values(quiz).sort((a, b) => b.score - a.score || a.time - b.time);
+    lastRows.review = data.filter(d => d.type === "review" && d.msg).reverse();
+    if (state && state.phase === "question") {
+      const tag = `ข้อ ${state.qi + 1}/`; const names = new Set(data.filter(d => d.type === "progress" && d.msg.startsWith(tag)).map(d => d.name.toLowerCase()));
+      document.getElementById("answeredCnt").textContent = `ตอบข้อนี้แล้ว ${names.size} คน`;
+      document.getElementById("bigTimer").textContent = names.size;
+    } else document.getElementById("answeredCnt").textContent = "";
+    render();
+    document.getElementById("lastUpd").textContent = "อัปเดต " + new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    hideErr();
+  } catch (e) {
+    showErr("อ่านข้อมูลไม่สำเร็จ (ตรวจว่า Deploy เว็บแอปเป็น 'ทุกคน') จะลองใหม่อัตโนมัติ");
+  }
+}
+function render() {
+  const q = lastRows.quiz;
+  document.getElementById("cntQuiz").textContent = q.length ? `${q.length} คน` : "";
+  const pod = document.getElementById("podium");
+  const stTxt = d => d.type === "quiz" ? "จบแล้ว ✓" : "กำลังเล่น " + (d.msg.split(" ถูก")[0] || "");
+  pod.innerHTML = [0, 1, 2, 3, 4].map(i => { const d = q[i]; const cls = ["p1", "p2", "p3", "p4", "p5"][i]; const medal = ["🥇", "🥈", "🥉", "4", "5"][i];
+    return `<div class="pod ${cls} ${hideTop && i < 3 ? "hidden-rank" : ""}"><div class="av">${d ? av(d.photo) : "?"}</div><div class="medal" ${i > 2 ? 'style="font-size:20px;font-family:var(--head);font-weight:700;color:var(--muted);margin-top:-10px"' : ""}>${medal}</div><div class="name">${d ? esc(d.name) : "—"}</div><div class="pts">${d ? d.score.toLocaleString() + " แต้ม" : ""}</div>${d ? `<div class="st ${d.type !== "quiz" ? "playing" : ""}">${stTxt(d)}</div>` : ""}</div>`; }).join("");
+  const list = document.getElementById("list");
+  list.innerHTML = q.length ? q.map((d, i) => `<div class="row ${seen.has(d.id) ? "" : "new"}"><div class="rk">${i + 1}</div><div class="av">${av(d.photo)}</div><div class="nm">${esc(d.name)}</div><div class="pt">${d.score.toLocaleString()}</div><div class="st ${d.type !== "quiz" ? "playing" : ""}">${stTxt(d)}</div><div class="tm">${d.time ? d.time + " วิ" : ""}</div></div>`).join("") : `<div class="empty">ยังไม่มีใครส่งคะแนน — สแกน QR แล้วเล่นควิซได้เลย</div>`;
+  const wall = document.getElementById("wall");
+  const rv = lastRows.review;
+  document.getElementById("cntRev").textContent = rv.length ? `${rv.length} ข้อความ` : "";
+  wall.innerHTML = rv.length ? rv.map((d, i) => `<div class="note ${seen.has(d.id) ? "" : "new"}" style="--r:${((i % 5) - 2) * 1.2}deg"><div class="hd"><div class="av">${av(d.photo)}</div><div class="nm">${esc(d.name)}</div><div class="md">${esc(d.mood)}</div></div><div class="tx">${esc(d.msg)}</div></div>`).join("") : `<div class="empty">รอความรู้สึกแรกจากผู้เข้าอบรม 💌</div>`;
+  const newOnes = [...q, ...rv].filter(d => !seen.has(d.id));
+  if (newOnes.length && seen.size) confetti(40);
+  [...q, ...rv].forEach(d => seen.add(d.id));
+}
+function toggleHide() { hideTop = !hideTop; document.getElementById("hideBtn").textContent = hideTop ? "แสดงชื่ออันดับ 1-3" : "ซ่อนชื่ออันดับ 1-3"; render(); }
+let annIdx = 0;
+function announce() {
+  const q = lastRows.quiz; if (!q.length) return;
+  const order = [2, 1, 0].filter(i => q[i]);
+  if (annIdx >= order.length) { annIdx = 0; closeBig(); hideTop = false; render(); return; }
+  const i = order[annIdx]; const d = q[i];
+  const big = document.getElementById("big");
+  big.innerHTML = `<h1>${["🥇 อันดับที่ 1", "🥈 อันดับที่ 2", "🥉 อันดับที่ 3"][i]}</h1><div class="av">${av(d.photo)}</div><div class="nm">${esc(d.name)}</div><div class="pt">${d.score.toLocaleString()} แต้ม</div><div class="hint">คลิกเพื่อ${annIdx + 1 < order.length ? "ประกาศอันดับถัดไป" : "ปิด"}</div>`;
+  big.style.display = "flex"; confetti(i === 0 ? 200 : 90); annIdx++;
+}
+function closeBig() { document.getElementById("big").style.display = "none"; }
+function showErr(t) { const e = document.getElementById("err"); e.textContent = t; e.style.display = "block"; }
+function hideErr() { document.getElementById("err").style.display = "none"; }
+function confetti(n) { const box = document.getElementById("confetti"); const cols = ["#e21b3c", "#1368ce", "#ffd93d", "#26890c", "#ff8fb1", "#4fd1ff"]; for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 100 + "vw"; el.style.background = cols[i % cols.length]; el.style.animationDelay = (Math.random() * .9) + "s"; box.appendChild(el); setTimeout(() => el.remove(), 4500); } }
+refresh(true).then(renderHost); setInterval(() => refresh(false), 3000);
+</script>
+</body>
+</html>

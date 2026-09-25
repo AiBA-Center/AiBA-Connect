@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เกมปิดท้ายการอบรม — คัมภีร์ใช้ AI</title>
+<meta name="theme-color" content="#0b6fb8">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6fb;--surface:#fff;--surface-2:#eef3fa;--line:#d9e1ee;--line-2:#b7c6dd;--text:#13213a;--muted:#55657f;--cyan:#0b6fb8;--accent-2:#2f5fe0;--amber:#c96f00;--amber-bg:#fff3df;--amber-line:#f0a53a;--green:#1e8f5a;--red:#c53030;--r:18px;--head:"Kanit","Noto Sans Thai",Tahoma,sans-serif;--body:"Sarabun","Noto Sans Thai",Tahoma,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:19px;line-height:1.6}
+h1,h2,h3{font-family:var(--head);font-weight:600;margin:0 0 8px}
+.wrap{max-width:720px;margin:auto;padding:18px 16px 60px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 14px 40px rgba(20,40,80,.08);margin-bottom:18px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:700}
+.muted{color:var(--muted)}
+.btn{border:1px solid transparent;border-radius:14px;padding:16px 22px;font-size:20px;font-weight:700;font-family:var(--head);cursor:pointer;width:100%;margin-top:12px}
+.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--accent-2));color:#fff}
+.btn.secondary{background:var(--surface-2);color:var(--text);border-color:var(--line-2)}
+.btn:disabled{opacity:.5;cursor:default}
+input[type=text],textarea{width:100%;border:1px solid var(--line-2);border-radius:14px;padding:16px 18px;font-size:20px;font-family:inherit;background:#fff;color:var(--text);outline:none}
+input:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(11,111,184,.15)}
+textarea{min-height:140px;resize:vertical}
+.avatar{width:120px;height:120px;border-radius:50%;background:var(--surface-2);border:3px solid var(--line-2);display:flex;align-items:center;justify-content:center;font-size:50px;overflow:hidden;margin:auto}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.center{text-align:center}
+.photo-btn{display:inline-block;margin-top:10px;border:1px dashed var(--line-2);border-radius:30px;padding:10px 18px;cursor:pointer;background:#fff;font-size:17px}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.menu .tile{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px 16px;text-align:center;cursor:pointer;transition:.15s}
+.menu .tile:hover{border-color:var(--cyan);transform:translateY(-3px)}
+.tile .ic{font-size:44px}.tile h3{font-size:20px;margin-top:6px}
+.hidden{display:none}
+.progress{height:12px;border-radius:10px;background:var(--line);overflow:hidden;margin:8px 0 14px}
+.progress>div{height:100%;background:linear-gradient(90deg,var(--cyan),var(--accent-2));transition:width .3s}
+.timer{font-family:var(--head);font-size:44px;font-weight:700;color:var(--cyan);text-align:center;line-height:1}
+.timer.low{color:var(--red);animation:pulse .6s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.q{font-family:var(--head);font-size:24px;font-weight:600;margin:12px 0 16px;text-align:center}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{border:none;border-radius:16px;padding:22px 14px;font-size:19px;font-weight:600;color:#fff;cursor:pointer;text-align:left;display:flex;gap:10px;align-items:center;min-height:96px;line-height:1.4;font-family:var(--body)}
+.opt .sh{font-size:26px;flex:none}
+.opt.c0{background:#e21b3c}.opt.c1{background:#1368ce}.opt.c2{background:#d89e00}.opt.c3{background:#26890c}
+.opt:disabled{opacity:.35}.opt.right{opacity:1;outline:5px solid #ffd93d;outline-offset:2px}.opt.picked{opacity:1}
+.fb{margin-top:14px;border-radius:16px;padding:16px 18px;font-size:19px;border:2px solid}
+.fb.ok{background:#e3f6ee;border-color:var(--green);color:#0f4d31}.fb.no{background:#ffe5e5;border-color:var(--red);color:#7a1010}
+.fb b{font-family:var(--head);font-size:22px;display:block}
+.score{font-family:var(--head);font-size:64px;font-weight:700;color:var(--cyan);line-height:1;text-align:center}
+.moods{display:flex;gap:10px;justify-content:center;margin:12px 0}
+.mood{font-size:44px;border:2px solid var(--line-2);border-radius:18px;padding:8px 14px;background:#fff;cursor:pointer}
+.mood.on{border-color:var(--amber-line);background:var(--amber-bg);transform:scale(1.1)}
+.pill{display:inline-block;background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber);border-radius:30px;padding:4px 12px;font-size:15px;font-weight:600}
+.status{margin-top:12px;font-weight:700;min-height:26px}
+.ok{color:var(--green)}.err{color:var(--red)}
+.voice{position:relative}.voice textarea{padding-right:64px}
+.voice button{position:absolute;right:8px;top:8px;width:46px;height:46px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface-2);font-size:22px;cursor:pointer}
+.voice button.on{background:var(--red);color:#fff;border-color:var(--red)}
+.setup label{display:block;font-weight:600;margin:14px 0 6px}
+.setup ol{padding-left:22px}.setup li{margin-bottom:8px}
+code{background:var(--surface-2);padding:2px 6px;border-radius:6px;font-size:16px}
+#qr{display:flex;justify-content:center;margin:14px 0}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.confetti i{position:absolute;top:-20px;width:12px;height:18px;border-radius:3px;animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+.cam{position:fixed;inset:0;background:rgba(6,15,30,.92);z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
+.cam.hidden{display:none}
+.cam-box{background:var(--surface);border-radius:22px;padding:16px;width:min(420px,100%);position:relative}
+.cam-box video{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:50%;background:#000;transform:scaleX(-1);display:block}
+.cam-box video.rear{transform:none}
+.cam-guide{position:absolute;left:16px;right:16px;top:16px;aspect-ratio:1/1;border-radius:50%;box-shadow:0 0 0 3px rgba(255,255,255,.7) inset;pointer-events:none}
+@media (max-width:480px){.opts{grid-template-columns:1fr}.menu{grid-template-columns:1fr}.q{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="top"><div class="logo">AI</div><div><div style="font-family:var(--head);font-weight:600;font-size:20px">เกมปิดท้ายการอบรม</div><div class="muted" style="font-size:14px">คัมภีร์ใช้ AI ฉบับใช้ง่าย</div></div></div>
+
+<!-- ไม่มีการตั้งค่า -->
+<div id="noCfg" class="card hidden center">
+  <h2>ยังไม่ได้ตั้งค่า</h2>
+  <p class="muted">วิทยากรต้องเปิด <a href="setup.html"><code>setup.html</code></a> เพื่อตั้งค่าและสร้างลิงก์ (QR) ก่อน แล้วให้ผู้เข้าอบรมสแกนลิงก์นั้น</p>
+</div>
+
+<!-- โปรไฟล์ -->
+<div id="profile" class="card hidden">
+  <h2 class="center">สวัสดีค่ะ/ครับ 👋</h2>
+  <p class="muted center">ใส่ชื่อเล่นและรูป เพื่อขึ้นจอใหญ่</p>
+  <div class="avatar" id="avatar">🙂</div>
+  <div class="center" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button type="button" class="photo-btn" onclick="openCamera()">📷 ถ่ายรูป</button>
+    <label class="photo-btn" for="photoIn">🖼 เลือกจากอัลบั้ม</label>
+    <input id="photoIn" type="file" accept="image/*" style="display:none" onchange="loadPhoto(this)">
+    <button type="button" class="photo-btn" id="flipBtn" style="display:none" onclick="flipPhoto()">↔ กลับด้าน</button>
+  </div>
+  <label style="display:block;font-weight:600;margin:16px 0 6px">ชื่อเล่น</label>
+  <input id="nick" type="text" maxlength="20" placeholder="เช่น ยายแจ่ม" oninput="checkProfile()">
+  <button class="btn primary" id="goBtn" onclick="saveProfile()" disabled>ไปต่อ →</button>
+</div>
+
+<!-- เมนู -->
+<div id="menu" class="hidden">
+  <div class="card" style="display:flex;align-items:center;gap:14px">
+    <div class="avatar" style="width:64px;height:64px;font-size:30px;margin:0" id="avatarSmall">🙂</div>
+    <div><div style="font-family:var(--head);font-size:22px;font-weight:600" id="nickShow"></div><div class="muted" style="font-size:15px">ชื่อและรูปนี้จะขึ้นจอใหญ่ <a href="#" onclick="editProfile();return false">แก้ไข</a></div></div>
+  </div>
+  <div class="menu">
+    <div class="tile" onclick="enterLobby()"><div class="ic">🏁</div><h3>เข้าห้องควิซ</h3><p class="muted" style="font-size:15px;margin:0">วิทยากรจะกดเริ่มพร้อมกันทุกคน<br>ตอบถูกข้อละ 1,000 แต้ม ไม่จับเวลา</p><span id="quizDone" class="pill hidden">ส่งคะแนนแล้ว</span></div>
+    <div class="tile" onclick="showReview()"><div class="ic">💌</div><h3>เขียนความรู้สึก</h3><p class="muted" style="font-size:15px;margin:0">ประทับใจอะไร<br>อยากติชมอะไร บอกได้เลย</p></div>
+  </div>
+</div>
+
+<!-- ห้องรอ -->
+<div id="lobby" class="card hidden center">
+  <div class="avatar" style="width:90px;height:90px;font-size:40px" id="avatarLobby">🙂</div>
+  <h2 style="margin-top:12px">เข้าห้องควิซแล้ว ✓</h2>
+  <p class="muted" id="lobbyMsg">รอวิทยากรกดเริ่ม... ดูที่จอใหญ่ได้เลย</p>
+  <div class="timer" style="font-size:28px;color:var(--muted)">⏳</div>
+  <button class="btn secondary" onclick="leaveLobby()">กลับหน้าหลัก</button>
+</div>
+
+<!-- ควิซ -->
+<div id="quiz" class="card hidden">
+  <div style="display:flex;justify-content:space-between;align-items:center"><span class="pill" id="qNum">ข้อ 1/10</span><span style="font-family:var(--head);font-weight:600;color:var(--cyan)" id="qScore">0 แต้ม</span></div>
+  <div class="progress"><div id="qBar"></div></div>
+  <div class="q" id="qText"></div>
+  <div class="opts" id="opts"></div>
+  <div id="qFb"></div>
+</div>
+
+<!-- จบควิซ -->
+<div id="quizEnd" class="card hidden center">
+  <h2>จบแล้ว! 🎉</h2>
+  <div class="score" id="finalScore">0</div>
+  <p class="muted">แต้ม · ถูก <span id="finalRight">0</span>/10 ข้อ</p>
+  <p id="sendStatus" class="status"></p>
+  <button class="btn secondary" onclick="leaveLobby()">กลับหน้าหลัก</button>
+  <button class="btn secondary" onclick="leaveLobby(); showReview()">เขียนความรู้สึกต่อ →</button>
+</div>
+
+<!-- รีวิว -->
+<div id="review" class="card hidden">
+  <h2>วันนี้รู้สึกอย่างไร?</h2>
+  <div class="moods">
+    <button class="mood" data-m="😍" onclick="pickMood(this)">😍</button>
+    <button class="mood" data-m="😊" onclick="pickMood(this)">😊</button>
+    <button class="mood" data-m="🙂" onclick="pickMood(this)">🙂</button>
+    <button class="mood" data-m="😐" onclick="pickMood(this)">😐</button>
+  </div>
+  <p class="muted">ประทับใจอะไรที่สุด อยากให้ปรับอะไร หรืออยากบอกอะไรกับวิทยากรและเพื่อน ๆ (ข้อความจะขึ้นจอใหญ่)</p>
+  <div class="voice"><textarea id="reviewText" placeholder="พิมพ์ หรือกดไมค์แล้วพูด"></textarea><button id="micBtn" onclick="dictate()">🎙</button></div>
+  <button class="btn primary" id="sendReviewBtn" onclick="sendReview()">ส่งขึ้นจอใหญ่ 💌</button>
+  <p id="reviewStatus" class="status"></p>
+  <button class="btn secondary" onclick="showMenu()">กลับหน้าหลัก</button>
+</div>
+
+</div>
+<div class="confetti" id="confetti"></div>
+<div id="camModal" class="cam hidden">
+  <div class="cam-box">
+    <video id="camVideo" autoplay playsinline muted></video>
+    <div class="cam-guide"></div>
+    <p class="muted center" style="margin:10px 0 0;font-size:16px">ภาพที่บันทึกจะเหมือนที่เห็นตรงนี้ทุกประการ</p>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <button class="btn secondary" style="margin:0" onclick="closeCamera()">ยกเลิก</button>
+      <button class="btn primary" style="margin:0" onclick="snap()">📸 ถ่าย</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- คำถาม 10 ข้อ (ทบทวน 2 วัน) ---------- */
+const QUESTIONS = [
+  { q: "\"Prompt\" คืออะไร?", o: ["ชื่อยี่ห้อมือถือ", "คำสั่งหรือคำอธิบายที่เราบอก AI ว่าอยากได้อะไร", "โปรแกรมแต่งรูป", "รหัสผ่านเข้าแอป"], a: 1 },
+  { q: "อยากให้ AI วาดภาพได้ตรงใจ ควรบอกอะไรบ้าง?", o: ["บอกแค่ชื่อของ เช่น \"รถ\"", "บอกวัตถุ สไตล์ มุมมอง แสง และพื้นหลัง", "พิมพ์ภาษาอังกฤษเท่านั้น", "บอกว่า \"สวย ๆ\" ก็พอ"], a: 1 },
+  { q: "GEM ใน Gemini คืออะไร?", o: ["อัญมณีสะสมแต้ม", "ผู้ช่วย AI ที่เราตั้งบทบาทและกฎให้ทำงานเฉพาะเรื่อง", "เกมในมือถือ", "แอปตัดต่อวิดีโอ"], a: 1 },
+  { q: "จะทำภาพนิ่งให้กลายเป็นวิดีโอ ต้องบอก AI ให้ชัด 3 อย่างคือ?", o: ["ราคา ยี่ห้อ รุ่น", "กล้องขยับยังไง อะไรในภาพขยับ อะไรห้ามเปลี่ยน", "ชื่อ ที่อยู่ เบอร์โทร", "วัน เดือน ปี"], a: 1 },
+  { q: "Prompt สั่งตัดวิดีโออัตโนมัติใน CapCut ควรเป็นแบบไหน?", o: ["ยาวมาก ๆ อธิบายทุกวินาที", "สั้น กระชับ บอกสไตล์ ความยาว และอารมณ์", "เป็นบทกวี", "ไม่ต้องพิมพ์อะไรเลย"], a: 1 },
+  { q: "ได้ SMS ว่า \"พัสดุค้างภาษี 38 บาท กดลิงก์เพื่อชำระ\" ควรทำอย่างไร?", o: ["กดจ่ายเลย แค่ 38 บาท", "ตอบกลับถามว่าพัสดุอะไร", "ไม่กดลิงก์ ลบทิ้ง ถ้าสงสัยโทรไปรษณีย์เอง", "ส่งต่อให้เพื่อนช่วยจ่าย"], a: 2 },
+  { q: "มีคนโทรมาขอรหัส OTP 6 หลักที่เพิ่งได้รับ แปลว่า?", o: ["เป็นเจ้าหน้าที่ธนาคารแน่นอน", "เป็นมิจฉาชีพ 100% ห้ามบอกเด็ดขาด", "บอกได้ถ้าเขาพูดสุภาพ", "บอกแค่ 3 ตัวแรกก็พอ"], a: 1 },
+  { q: "คำสั่ง (System Prompt) ของ GEM ที่ดี ควรมีอะไรบ้าง?", o: ["พิมพ์แค่ \"ช่วยฉันด้วย\" สั้น ๆ พอ", "บอกบทบาท หน้าที่ กลุ่มผู้ใช้ น้ำเสียง กฎที่ต้องทำ และสิ่งห้ามทำ", "ใส่แต่ชื่อร้านกับเบอร์โทร", "เขียนเป็นภาษาอังกฤษเท่านั้นถึงจะใช้ได้"], a: 1 },
+  { q: "LINE จากบัญชีใหม่บอกว่า \"แม่ หนูเปลี่ยนเบอร์ ขอยืมเงินด่วน\" ควรทำอย่างไร?", o: ["โอนทันที ลูกเดือดร้อน", "โทรหาลูกที่เบอร์เดิมหรือถามคนในครอบครัวก่อน", "ถามในแชทว่าเกิดวันไหน", "โอนครึ่งเดียวก่อน"], a: 1 },
+  { q: "ให้ AI อธิบายเรื่องยาหรืออาการ แล้วควรทำอย่างไรต่อ?", o: ["เชื่อทั้งหมด ไม่ต้องถามใคร", "ใช้เป็นด่านแรกให้เข้าใจ แล้วยืนยันกับหมอหรือเภสัชกรจริง", "ซื้อยาตามที่ AI บอกทันที", "เลิกไปหาหมอ"], a: 1 }
+];
+const SHAPES = ["▲", "◆", "●", "■"];
+
+/* ---------- ตั้งค่า / เก็บข้อมูล ---------- */
+const LS = "kampeeGame:";
+let CFG = null;
+function parseCfgFromHash() {
+  const m = location.hash.match(/cfg=([^&]+)/);
+  if (!m) return null;
+  try { return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1]))))); } catch (e) { return null; }
+}
+function encodeCfg(c) { return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(c))))); }
+function loadCfg() {
+  CFG = parseCfgFromHash();
+  if (CFG) { try { localStorage.setItem(LS + "cfg", JSON.stringify(CFG)); } catch (e) {} }
+  else { try { CFG = JSON.parse(localStorage.getItem(LS + "cfg")); } catch (e) { CFG = null; } }
+}
+function submitRow(fields) {
+  if (!CFG || !CFG.api) return Promise.reject(new Error("no cfg"));
+  const body = JSON.stringify({ type: fields.TYPE, name: fields.NAME, score: fields.SCORE, time: fields.TIME, message: fields.MESSAGE, photo: fields.PHOTO, mood: fields.MOOD });
+  // text/plain เพื่อไม่ให้เกิด preflight; Apps Script อ่านจาก postData.contents
+  return fetch(CFG.api, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body })
+    .then(r => r.json()).then(j => { if (!j.ok) throw new Error(j.error || "fail"); return j; });
+}
+
+/* ---------- โปรไฟล์ ---------- */
+let profile = { nick: "", photo: "" };
+function show(id) { ["noCfg", "profile", "menu", "lobby", "quiz", "quizEnd", "review"].forEach(x => document.getElementById(x).classList.toggle("hidden", x !== id)); window.scrollTo({ top: 0 }); }
+let rawPhotoImg = null, mirror = true;   // กล้องหน้าถ่ายมาจะสลับฝั่งกับที่เห็นตอนถ่าย จึงกลับด้านให้เป็นค่าเริ่มต้น
+function renderPhoto() {
+  if (!rawPhotoImg) return;
+  const S = 96, c = document.createElement("canvas"); c.width = S; c.height = S;
+  const ctx = c.getContext("2d");
+  const img = rawPhotoImg, s = Math.min(img.width, img.height), sx = (img.width - s) / 2, sy = (img.height - s) / 2;
+  if (mirror) { ctx.translate(S, 0); ctx.scale(-1, 1); }
+  ctx.drawImage(img, sx, sy, s, s, 0, 0, S, S);
+  profile.photo = c.toDataURL("image/jpeg", 0.7);
+  document.getElementById("avatar").innerHTML = `<img src="${profile.photo}">`;
+  document.getElementById("flipBtn").style.display = "";
+  checkProfile();
+}
+function loadPhoto(input) {
+  const f = input.files && input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = e => { const img = new Image(); img.onload = () => { rawPhotoImg = img; mirror = false; renderPhoto(); }; img.src = e.target.result; };
+  r.readAsDataURL(f);
+}
+function flipPhoto() { mirror = !mirror; renderPhoto(); }
+
+// ---- ถ่ายรูปในหน้าเว็บ: พรีวิวเป็นกระจก และบันทึก "ตามที่เห็น" เป๊ะ ๆ ----
+let camStream = null, camFacingUser = true;
+function openCamera() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { document.getElementById("photoIn").click(); return; }
+  const v = document.getElementById("camVideo");
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 720 }, height: { ideal: 720 } }, audio: false })
+    .then(st => { camStream = st; v.srcObject = st; const tr = st.getVideoTracks()[0]; const set = tr.getSettings ? tr.getSettings() : {}; camFacingUser = set.facingMode !== "environment"; v.classList.toggle("rear", !camFacingUser); document.getElementById("camModal").classList.remove("hidden"); })
+    .catch(() => { document.getElementById("photoIn").click(); });   // ไม่อนุญาตกล้อง → ใช้วิธีเลือกไฟล์แทน
+}
+function closeCamera() {
+  if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+  document.getElementById("camModal").classList.add("hidden");
+}
+function snap() {
+  const v = document.getElementById("camVideo");
+  if (!v.videoWidth) return;
+  const S = 96, c = document.createElement("canvas"); c.width = S; c.height = S;
+  const ctx = c.getContext("2d");
+  const s0 = Math.min(v.videoWidth, v.videoHeight), sx = (v.videoWidth - s0) / 2, sy = (v.videoHeight - s0) / 2;
+  if (camFacingUser) { ctx.translate(S, 0); ctx.scale(-1, 1); }     // กระจกเหมือนพรีวิว
+  ctx.drawImage(v, sx, sy, s0, s0, 0, 0, S, S);
+  profile.photo = c.toDataURL("image/jpeg", 0.75);
+  const img = new Image(); img.onload = () => { rawPhotoImg = img; mirror = false; }; img.src = profile.photo;  // เก็บไว้ให้ปุ่มกลับด้านใช้ต่อได้
+  document.getElementById("avatar").innerHTML = `<img src="${profile.photo}">`;
+  document.getElementById("flipBtn").style.display = "";
+  closeCamera(); checkProfile();
+}
+function checkProfile() { document.getElementById("goBtn").disabled = document.getElementById("nick").value.trim().length < 1; }
+function saveProfile() {
+  profile.nick = document.getElementById("nick").value.trim().slice(0, 20);
+  try { localStorage.setItem(LS + "profile", JSON.stringify(profile)); } catch (e) {}
+  showMenu();
+}
+function editProfile() { show("profile"); }
+function showMenu() {
+  document.getElementById("nickShow").textContent = profile.nick;
+  document.getElementById("avatarSmall").innerHTML = profile.photo ? `<img src="${profile.photo}">` : "🙂";
+  document.getElementById("quizDone").classList.toggle("hidden", !quizSentThisRound());
+  stopPolling();
+  show("menu");
+}
+
+/* ---------- ควิซ (วิทยากรคุมข้อถัดไปจากจอกลาง · ไม่จับเวลา · กันเน็ตหลุด) ---------- */
+let qi = -1, score = 0, right = 0, answered = false, answeredQ = {};
+let state = null, pollTimer = null, lastRound = null, inQuiz = false, failCount = 0;
+const roundKey = () => LS + "quizSent:r" + (state ? state.round : "?");
+const quizSentThisRound = () => !!(state && localStorage.getItem(roundKey()));
+const POINTS = 1000;
+
+// ---- เก็บความคืบหน้าไว้ในเครื่อง: เน็ตหลุด/รีเฟรช/แอปเด้ง กลับมาเล่นต่อได้ที่เดิม ----
+function saveLocal() { try { localStorage.setItem(LS + "game", JSON.stringify({ round: state ? state.round : null, score, right, answeredQ })); } catch (e) {} }
+function loadLocal(round) {
+  try { const g = JSON.parse(localStorage.getItem(LS + "game")); if (g && g.round === round) { score = g.score || 0; right = g.right || 0; answeredQ = g.answeredQ || {}; return true; } } catch (e) {}
+  score = 0; right = 0; answeredQ = {}; return false;
+}
+
+function fetchState() {
+  return fetch(CFG.api + "?action=state&_=" + Date.now(), { cache: "no-store" }).then(r => r.json()).then(j => { if (!j.ok) throw 0; return j.state; });
+}
+function enterLobby() {
+  inQuiz = true; try { localStorage.setItem(LS + "inQuiz", "1"); } catch (e) {}
+  document.getElementById("avatarLobby").innerHTML = profile.photo ? `<img src="${profile.photo}">` : "🙂";
+  show("lobby");
+  document.getElementById("lobbyMsg").textContent = "กำลังเชื่อมต่อ...";
+  startPolling();
+}
+function leaveLobby() { inQuiz = false; try { localStorage.removeItem(LS + "inQuiz"); } catch (e) {} stopPolling(); showMenu(); }
+function startPolling() { stopPolling(); poll(); pollTimer = setInterval(poll, 3000 + Math.random() * 800); }
+function stopPolling() { clearInterval(pollTimer); pollTimer = null; }
+
+function poll() {
+  if (!inQuiz) return;
+  fetchState().then(st => {
+    failCount = 0; hideNetWarn();
+    state = st;
+    if (lastRound !== st.round) { loadLocal(st.round); lastRound = st.round; qi = -1; }
+    if (st.phase === "lobby") {
+      if (qi >= 0 && !document.getElementById("quizEnd").classList.contains("hidden")) return;   // คงหน้าจบไว้
+      document.getElementById("lobbyMsg").textContent = "รอวิทยากรกดเริ่ม... ดูที่จอใหญ่ได้เลย";
+      show("lobby");
+    } else if (st.phase === "question") {
+      if (st.qi !== qi && st.qi < QUESTIONS.length) { qi = st.qi; renderQ(); }
+    } else if (st.phase === "end") {
+      if (!document.getElementById("quizEnd").classList.contains("hidden")) return;
+      endQuiz();
+    }
+  }).catch(() => {
+    failCount++;
+    if (failCount >= 2) showNetWarn();     // เน็ตสะดุด: ไม่เด้งออก แค่แจ้งเตือน แล้วลองใหม่เอง
+    const m = document.getElementById("lobbyMsg"); if (m && !document.getElementById("lobby").classList.contains("hidden")) m.textContent = "เชื่อมต่อไม่ได้ กำลังลองใหม่...";
+  });
+}
+function showNetWarn() { let w = document.getElementById("netWarn"); if (!w) { w = document.createElement("div"); w.id = "netWarn"; w.style.cssText = "position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#c96f00;color:#fff;padding:10px 18px;border-radius:12px;z-index:70;font-weight:700"; w.textContent = "📶 สัญญาณไม่ดี กำลังเชื่อมต่อใหม่... คะแนนของคุณยังอยู่"; document.body.appendChild(w); } }
+function hideNetWarn() { const w = document.getElementById("netWarn"); if (w) w.remove(); }
+
+function renderQ() {
+  const Q = QUESTIONS[qi];
+  show("quiz");
+  document.getElementById("qNum").textContent = `ข้อ ${qi + 1}/${QUESTIONS.length}`;
+  document.getElementById("qScore").textContent = `${score} แต้ม`;
+  document.getElementById("qBar").style.width = (qi / QUESTIONS.length * 100) + "%";
+  document.getElementById("qText").textContent = Q.q;
+  const order = [0, 1, 2, 3].sort(() => Math.random() - .5);
+  document.getElementById("opts").innerHTML = order.map((k, i) => `<button class="opt c${i}" data-k="${k}" onclick="answer(${k})"><span class="sh">${SHAPES[i]}</span><span>${Q.o[k]}</span></button>`).join("");
+  document.getElementById("qFb").innerHTML = "";
+  answered = false;
+  if (answeredQ[qi] !== undefined) { showAnswered(answeredQ[qi], false); }   // เคยตอบข้อนี้แล้ว (กลับมาหลังเน็ตหลุด)
+  if (navigator.vibrate) navigator.vibrate(80);
+}
+function showAnswered(k, celebrate) {
+  const Q = QUESTIONS[qi]; const ok = k === Q.a; answered = true;
+  document.querySelectorAll(".opt").forEach(b => { b.disabled = true; const kk = Number(b.dataset.k); if (kk === Q.a) b.classList.add("right"); if (kk === k) b.classList.add("picked"); });
+  document.getElementById("qScore").textContent = `${score} แต้ม`;
+  document.getElementById("qFb").innerHTML = `<div class="fb ${ok ? "ok" : "no"}"><b>${ok ? `ถูกต้อง! +${POINTS} แต้ม 🎉` : "ยังไม่ถูกนะ 😅"}</b>คำตอบคือ: ${Q.o[Q.a]}<div class="muted" style="margin-top:10px">⏳ รอวิทยากรกดข้อถัดไป...</div></div>`;
+  if (ok && celebrate) confetti(30);
+}
+function answer(k) {
+  if (answered || answeredQ[qi] !== undefined) return;
+  const Q = QUESTIONS[qi]; const ok = k === Q.a;
+  if (ok) { right++; score += POINTS; }
+  answeredQ[qi] = k; saveLocal();
+  showAnswered(k, true);
+  if (!quizSentThisRound()) {
+    submitRow({ TYPE: "progress", NAME: profile.nick, SCORE: score, TIME: 0, MESSAGE: `ข้อ ${qi + 1}/${QUESTIONS.length} ถูก ${right}`, PHOTO: profile.photo, MOOD: "r" + state.round }).catch(() => {});
+  }
+}
+function endQuiz() {
+  show("quizEnd");
+  document.getElementById("finalScore").textContent = score; document.getElementById("finalRight").textContent = right;
+  confetti(120);
+  const st = document.getElementById("sendStatus");
+  if (quizSentThisRound()) { st.className = "status"; st.textContent = "ส่งคะแนนไปแล้ว ✓"; return; }
+  st.textContent = "กำลังส่งคะแนนขึ้นจอใหญ่...";
+  submitRow({ TYPE: "quiz", NAME: profile.nick, SCORE: score, TIME: 0, MESSAGE: `ถูก ${right}/${QUESTIONS.length}`, PHOTO: profile.photo, MOOD: "r" + state.round })
+    .then(() => { localStorage.setItem(roundKey(), "1"); st.className = "status ok"; st.textContent = "ส่งคะแนนแล้ว ✓ ดูอันดับที่จอใหญ่ได้เลย"; })
+    .catch(() => { st.className = "status err"; st.innerHTML = 'ส่งไม่สำเร็จ <button class="btn secondary" onclick="endQuiz()">ส่งอีกครั้ง</button>'; });
+}
+
+/* ---------- รีวิว ---------- */
+let mood = "😊";
+function showReview() { show("review"); document.querySelectorAll(".mood").forEach(b => b.classList.toggle("on", b.dataset.m === mood)); }
+function pickMood(b) { mood = b.dataset.m; document.querySelectorAll(".mood").forEach(x => x.classList.toggle("on", x === b)); }
+function sendReview() {
+  const t = document.getElementById("reviewText").value.trim();
+  const st = document.getElementById("reviewStatus");
+  if (!t) { st.className = "status err"; st.textContent = "พิมพ์หรือพูดความรู้สึกสักนิดก่อนนะ"; return; }
+  document.getElementById("sendReviewBtn").disabled = true; st.className = "status"; st.textContent = "กำลังส่ง...";
+  submitRow({ TYPE: "review", NAME: profile.nick, SCORE: "", TIME: "", MESSAGE: t, PHOTO: profile.photo, MOOD: mood })
+    .then(() => { st.className = "status ok"; st.textContent = "ส่งขึ้นจอใหญ่แล้ว ✓ ขอบคุณค่ะ/ครับ"; document.getElementById("reviewText").value = ""; document.getElementById("sendReviewBtn").disabled = false; confetti(60); })
+    .catch(() => { st.className = "status err"; st.textContent = "ส่งไม่สำเร็จ ลองอีกครั้ง"; document.getElementById("sendReviewBtn").disabled = false; });
+}
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition; let rec = null;
+function dictate() {
+  const b = document.getElementById("micBtn"); if (!SR) { alert("เบราว์เซอร์นี้ไม่รองรับการพูดแทนพิมพ์"); return; }
+  if (rec) { rec.stop(); return; }
+  rec = new SR(); rec.lang = "th-TH"; b.classList.add("on"); b.textContent = "⏹";
+  const done = () => { b.classList.remove("on"); b.textContent = "🎙"; rec = null; };
+  rec.onresult = e => { const ta = document.getElementById("reviewText"); ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + e.results[0][0].transcript; };
+  rec.onerror = done; rec.onend = done; rec.start();
+}
+
+/* ---------- ฉลอง ---------- */
+function confetti(n) {
+  const box = document.getElementById("confetti"); const cols = ["#e21b3c", "#1368ce", "#d89e00", "#26890c", "#ff8fb1", "#ffd93d"];
+  for (let i = 0; i < n; i++) { const el = document.createElement("i"); el.style.left = Math.random() * 100 + "vw"; el.style.background = cols[i % cols.length]; el.style.animationDelay = (Math.random() * .8) + "s"; el.style.transform = `rotate(${Math.random() * 360}deg)`; box.appendChild(el); setTimeout(() => el.remove(), 3800); }
+}
+
+/* ---------- เริ่ม ---------- */
+loadCfg();
+if (location.search.includes("setup")) {
+  location.replace("setup.html");
+} else if (!CFG || !CFG.api) {
+  show("noCfg");
+} else {
+  try { profile = JSON.parse(localStorage.getItem(LS + "profile")) || profile; } catch (e) {}
+  if (profile.nick) { showMenu(); if (localStorage.getItem(LS + "inQuiz")) enterLobby(); } else { show("profile"); }
+  if (profile.photo) document.getElementById("avatar").innerHTML = `<img src="${profile.photo}">`;
+  document.getElementById("nick").value = profile.nick || "";
+  checkProfile();
+}
+</script>
+</body>
+</html>

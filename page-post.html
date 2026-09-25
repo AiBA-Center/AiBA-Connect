@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เขียนโพสต์โซเชียล — คัมภีร์ใช้ AI</title>
+<meta name="theme-color" content="#ff6f61">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <a class="back-home" href="index.html">🏠 หน้าหลัก</a>
+  <div class="topbar-title">เขียนโพสต์โซเชียล</div>
+  <div class="topbar-tools">
+    <button onclick="changeFontSize(1)" title="เพิ่มขนาดตัวอักษร">A+</button>
+    <button onclick="changeFontSize(-1)" title="ลดขนาดตัวอักษร">A-</button>
+    <button id="themeBtn" onclick="toggleTheme()" title="สลับธีม">🌙 มืด</button>
+  </div>
+</div></div>
+<div class="page-hero"><div class="page-hero-inner cat-ai"><div class="page-emoji">✍</div><div><h1>เขียนโพสต์โซเชียล</h1><p>ขายของ เล่าเรื่อง แจ้งข่าว ให้ AI เขียนโพสต์มาให้เลือก 3 แบบ</p></div></div></div>
+<main class="page">
+<div id="resumeBanner" class="resume-banner">
+  <div><strong>พบงานที่ทำค้างไว้ในหน้านี้</strong> <span id="resumeInfo"></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="primary-btn" style="padding:10px 18px;font-size:17px;" onclick="restoreWork()">ทำต่อจากเดิม</button>
+    <button class="danger-btn" style="padding:10px 18px;font-size:17px;" onclick="discardWork()">เริ่มใหม่</button>
+  </div>
+</div>
+<section id="postBuilder" class="builder active">
+        <p class="section-description">
+            บอกว่าจะโพสต์เรื่องอะไร ลงที่ไหน อยากให้เสียงเป็นแบบไหน ระบบจะสร้างคำสั่งให้ AI เขียนโพสต์มาให้เลือก 3 แบบ
+            พร้อมแฮชแท็กและคำชวนกดสั่ง/ติดตาม เลือกแบบที่ชอบแล้วก๊อปไปโพสต์ได้เลย
+        </p>
+
+        <div class="step">
+            <div><span class="step-number">1</span><span class="step-title">จะโพสต์เรื่องอะไร?</span></div>
+            <p class="step-help">พิมพ์หรือกดไมค์แล้วเล่าตามธรรมชาติ ยิ่งมีรายละเอียด (ชื่อ ราคา วันเวลา สถานที่) โพสต์จะยิ่งดี</p>
+            <textarea id="postTopic" class="large-textarea" placeholder="เช่น ขายขนมครกสูตรคุณยาย ทำสดทุกเช้า กล่องละ 40 บาท ขายที่ตลาดนัดวัดใหญ่ทุกวันเสาร์ 7-11 โมง รับสั่งล่วงหน้าทาง LINE" oninput="refreshPostPrompt()"></textarea>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">2</span><span class="step-title">ลงที่ไหน?</span></div>
+            <p class="step-help">แต่ละที่มีความยาวและสไตล์ที่เหมาะต่างกัน</p>
+            <div class="choice-grid">
+                <button class="choice" data-pgroup="platform" data-value="Facebook" onclick="pickChoice(this)"><span class="choice-icon">📘</span>Facebook</button>
+                <button class="choice" data-pgroup="platform" data-value="LINE (โพสต์ในกลุ่ม หรือ LINE VOOM)" onclick="pickChoice(this)"><span class="choice-icon">💚</span>LINE</button>
+                <button class="choice" data-pgroup="platform" data-value="TikTok (แคปชันใต้คลิป)" onclick="pickChoice(this)"><span class="choice-icon">🎵</span>TikTok</button>
+                <button class="choice" data-pgroup="platform" data-value="Instagram" onclick="pickChoice(this)"><span class="choice-icon">📸</span>Instagram</button>
+                <button class="choice" data-pgroup="platform" data-value="ข้อความส่งลูกค้าใน LINE แบบตัวต่อตัว" onclick="pickChoice(this)"><span class="choice-icon">💬</span>แชทหาลูกค้า</button>
+                <button class="choice" data-pgroup="platform" data-value="ป้ายหรือใบปลิว (ข้อความสั้น)" onclick="pickChoice(this)"><span class="choice-icon">🪧</span>ป้าย/ใบปลิว</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">3</span><span class="step-title">โพสต์เพื่ออะไร?</span></div>
+            <p class="step-help">เลือก 1 อย่าง</p>
+            <div class="choice-grid">
+                <button class="choice" data-pgroup="purpose" data-value="ขายสินค้าหรือบริการ" onclick="pickChoice(this)"><span class="choice-icon">🛍</span>ขายของ</button>
+                <button class="choice" data-pgroup="purpose" data-value="รีวิวหรือแนะนำร้าน/สินค้าที่ชอบ" onclick="pickChoice(this)"><span class="choice-icon">⭐</span>รีวิว/แนะนำ</button>
+                <button class="choice" data-pgroup="purpose" data-value="เล่าเรื่องราวหรือชีวิตประจำวัน" onclick="pickChoice(this)"><span class="choice-icon">📖</span>เล่าเรื่อง</button>
+                <button class="choice" data-pgroup="purpose" data-value="ทักทายหรืออวยพรเพื่อน ๆ" onclick="pickChoice(this)"><span class="choice-icon">🌸</span>ทักทาย/อวยพร</button>
+                <button class="choice" data-pgroup="purpose" data-value="แจ้งข่าว กิจกรรม หรือนัดหมาย" onclick="pickChoice(this)"><span class="choice-icon">📣</span>แจ้งข่าว/กิจกรรม</button>
+                <button class="choice" data-pgroup="purpose" data-value="ชวนเข้าร่วมกลุ่มหรือกิจกรรม" onclick="pickChoice(this)"><span class="choice-icon">🤝</span>ชวนเข้าร่วม</button>
+                <button class="choice" data-pgroup="purpose" data-value="ขอบคุณลูกค้าหรือคนที่ช่วยเหลือ" onclick="pickChoice(this)"><span class="choice-icon">🙏</span>ขอบคุณ</button>
+                <button class="choice" data-pgroup="purpose" data-value="แบ่งปันข้อคิดหรือธรรมะ" onclick="pickChoice(this)"><span class="choice-icon">🪷</span>ข้อคิด/ธรรมะ</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">4</span><span class="step-title">อยากให้เสียงของโพสต์เป็นแบบไหน?</span>
+                <span class="multi-hint">เลือกได้หลายข้อ</span></div>
+            <p class="step-help">แนะนำ 1-2 อย่าง</p>
+            <div class="choice-grid">
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="เป็นกันเอง เหมือนคุยกับเพื่อนบ้าน" onclick="pickChoice(this)"><span class="choice-icon">😊</span>เป็นกันเอง</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="สุภาพ น่าเชื่อถือ" onclick="pickChoice(this)"><span class="choice-icon">👔</span>สุภาพ</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="สนุก มีมุกเล็กน้อย" onclick="pickChoice(this)"><span class="choice-icon">😄</span>สนุก</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="อบอุ่น ซาบซึ้ง" onclick="pickChoice(this)"><span class="choice-icon">🥹</span>อบอุ่น</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="กระตุ้นให้รีบตัดสินใจ (มีจำนวนจำกัด/โปรหมดเมื่อไหร่)" onclick="pickChoice(this)"><span class="choice-icon">⏰</span>เร่งด่วน</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="ภูมิใจในฝีมือและความตั้งใจ" onclick="pickChoice(this)"><span class="choice-icon">💪</span>ภูมิใจ</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="สั้น ตรงประเด็น ไม่เยิ่นเย้อ" onclick="pickChoice(this)"><span class="choice-icon">⚡</span>กระชับ</button>
+                <button class="choice" data-pgroup="tone" data-multi="1" data-value="ใช้ภาษาถิ่น/สำนวนท้องถิ่นนิด ๆ" onclick="pickChoice(this)"><span class="choice-icon">🗣</span>ภาษาถิ่น</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">5</span><span class="step-title">ในโพสต์ควรมีอะไรบ้าง?</span>
+                <span class="multi-hint">เลือกได้หลายข้อ</span></div>
+            <p class="step-help">ข้อที่ไม่เลือก AI จะไม่ใส่</p>
+            <div class="choice-grid">
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="อีโมจิพอเหมาะ ไม่เยอะเกิน" onclick="pickChoice(this)"><span class="choice-icon">😀</span>อีโมจิ</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="แฮชแท็ก 3-5 อัน ท้ายโพสต์" onclick="pickChoice(this)"><span class="choice-icon">#</span>แฮชแท็ก</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="ประโยคชวนให้ทำต่อ เช่น ทักมาสั่งได้เลย / กดติดตาม / แชร์ให้เพื่อน" onclick="pickChoice(this)"><span class="choice-icon">👉</span>คำชวน (CTA)</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="คำถามท้ายโพสต์ชวนคนมาคอมเมนต์" onclick="pickChoice(this)"><span class="choice-icon">❓</span>คำถามชวนคุย</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="ราคา วิธีสั่ง และช่องทางติดต่อให้ชัด" onclick="pickChoice(this)"><span class="choice-icon">💰</span>ราคา/วิธีสั่ง</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="ประโยคเปิดที่ดึงความสนใจในบรรทัดแรก" onclick="pickChoice(this)"><span class="choice-icon">🪝</span>เปิดให้สะดุด</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="เว้นบรรทัดเยอะ ๆ อ่านง่ายบนมือถือ" onclick="pickChoice(this)"><span class="choice-icon">📱</span>อ่านง่ายบนมือถือ</button>
+                <button class="choice" data-pgroup="include" data-multi="1" data-value="ไม่ใช้ศัพท์วัยรุ่นหรือคำทับศัพท์" onclick="pickChoice(this)"><span class="choice-icon">🔤</span>ภาษาเข้าใจง่าย</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">6</span><span class="step-title">คนที่อ่านคือใคร?</span></div>
+            <p class="step-help">ไม่บังคับ แต่ช่วยให้ AI เลือกคำได้ตรง</p>
+            <div class="choice-grid">
+                <button class="choice" data-pgroup="audience" data-value="เพื่อน ๆ และคนรู้จักวัยเดียวกัน" onclick="pickChoice(this)"><span class="choice-icon">👵</span>เพื่อนวัยเดียวกัน</button>
+                <button class="choice" data-pgroup="audience" data-value="ลูกค้าทั่วไปในละแวกบ้าน" onclick="pickChoice(this)"><span class="choice-icon">🏘</span>ลูกค้าแถวบ้าน</button>
+                <button class="choice" data-pgroup="audience" data-value="คนวัยทำงานที่ซื้อของออนไลน์" onclick="pickChoice(this)"><span class="choice-icon">💼</span>วัยทำงาน</button>
+                <button class="choice" data-pgroup="audience" data-value="ลูกหลานและครอบครัว" onclick="pickChoice(this)"><span class="choice-icon">👨‍👩‍👧</span>ครอบครัว</button>
+                <button class="choice" data-pgroup="audience" data-value="สมาชิกกลุ่มหรือชุมชน" onclick="pickChoice(this)"><span class="choice-icon">👥</span>กลุ่ม/ชุมชน</button>
+                <button class="choice" data-pgroup="audience" data-value="คนที่ยังไม่รู้จักเราเลย" onclick="pickChoice(this)"><span class="choice-icon">🌍</span>คนทั่วไป</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">7</span><span class="step-title">ข้อมูลเพิ่มเติม (ไม่บังคับ)</span></div>
+            <p class="step-help">เช่น ชื่อร้าน เบอร์โทร ไอดี LINE จุดเด่นที่อยากเน้น หรือสิ่งที่ห้ามพูดถึง</p>
+            <textarea id="postExtra" class="large-textarea" style="min-height:90px;" placeholder="เช่น ชื่อร้าน ขนมครกยายแจ่ม / LINE: yaijam / ห้ามบอกว่าถูกที่สุด" oninput="refreshPostPrompt()"></textarea>
+        </div>
+
+        <div class="button-row gen-row">
+            <button class="primary-btn" onclick="generatePostPrompt()">สร้างคำสั่งเขียนโพสต์</button>
+            <button class="secondary-btn" onclick="postExample()">ลองตัวอย่าง</button>
+            <button class="danger-btn" onclick="clearPost()">เริ่มใหม่</button>
+        </div>
+
+        <div id="postResult" class="result" style="display:none;">
+            <h3>คำสั่งพร้อมส่งให้ AI เขียนโพสต์</h3>
+            <p>วางใน ChatGPT หรือ Gemini จะได้โพสต์ 3 แบบให้เลือก ชอบแบบไหนก๊อปไปโพสต์ หรือบอก AI ให้แก้ต่อได้
+               <span style="color:var(--muted);font-size:16px;">(เปลี่ยนตัวเลือกด้านบนได้ตลอด ข้อความจะอัปเดตให้เอง)</span></p>
+            <div class="toggle-row">
+                <button class="toggle" id="tglPostImage" onclick="togglePostImage()">🖼 ขอ Prompt ภาพประกอบโพสต์ด้วย</button>
+            </div>
+            <div id="postPromptOutput" class="prompt-box"></div>
+            <div class="button-row">
+                <button class="primary-btn" onclick="copyText('postPromptOutput','postCopyMessage','คัดลอกคำสั่งเรียบร้อยแล้ว')">คัดลอกคำสั่ง</button>
+                <button class="secondary-btn" onclick="speakText(document.getElementById('postPromptOutput').textContent)">อ่านให้ฟัง</button>
+            </div>
+            <p id="postCopyMessage" style="color:var(--green);font-weight:bold;margin-top:15px;"></p>
+            <div class="open-app-row">
+                <p>ขั้นต่อไป: เปิดแอปแล้ววางคำสั่ง (ระบบคัดลอกให้อัตโนมัติ)</p>
+                <div class="button-row" style="margin-top:0;">
+                    <a class="app-btn gpt" href="https://chatgpt.com" target="_blank" rel="noopener" onclick="return copyForApp('postPromptOutput', 'postCopyMessage')"><span class="app-logo">G</span>เปิด ChatGPT</a>
+                    <a class="app-btn gemini" href="https://gemini.google.com/app" target="_blank" rel="noopener" onclick="return copyForApp('postPromptOutput', 'postCopyMessage')"><span class="app-logo">✦</span>เปิด Gemini</a>
+                </div>
+            </div>
+            <div class="hotline">
+                <strong>ก่อนโพสต์ ตรวจ 3 อย่าง:</strong>
+                <span>✅ ราคา วันเวลา เบอร์ ถูกต้อง</span>
+                <span>✅ ไม่โอ้อวดเกินจริง (เช่น รักษาโรค ถูกที่สุด ดีที่สุด)</span>
+                <span>✅ ไม่ใส่ข้อมูลส่วนตัวเกินจำเป็น เช่น ที่อยู่บ้าน เลขบัญชี</span>
+            </div>
+        </div>
+    </section>
+</main>
+<aside class="related"><h3>ไปต่อที่เกี่ยวข้อง</h3><div class="related-grid"><a class="rel-card" href="page-image.html"><div class="ic cat-create">✨</div><div><b>สร้างภาพด้วย AI</b><span>ตอบคำถามทีละข้อ แล้วรับ Prompt สำหรับให้ AI สร้างภาพ พร้อมคล</span></div></a><a class="rel-card" href="page-greeting.html"><div class="ic cat-create">🌸</div><div><b>ภาพอวยพร</b><span>เลือกสไตล์ เปลี่ยนวัน คำอวยพร ชื่อ แล้วรับ Prompt สำเร็จรูป </span></div></a><a class="rel-card" href="page-poster.html"><div class="ic cat-create">🖼</div><div><b>สไตล์โปสเตอร์โฆษณาสินค้า</b><span>เลือกสไตล์จากภาพตัวอย่าง 10 แบบ รับ Prompt สำเร็จรูปสำหรับรู</span></div></a></div></aside>
+
+<footer>
+    <p style="font-size:20px;font-weight:bold;color:#ffffff;">คัมภีร์ใช้ AI</p>
+    <p>ออกแบบให้ทุกคนสามารถเริ่มต้นใช้งาน AI ได้ง่าย</p>
+    <p style="opacity:.8;font-size:14px;margin-top:12px;">หมายเหตุ: คำสั่งในเว็บนี้เป็นคำสำคัญสำหรับช่วยเขียน Prompt ไม่ใช่คำสั่งที่ AI ทุกระบบรองรับโดยตรง</p>
+</footer>
+<div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <hr>
+        <h3>ใช้เมื่อไหร่?</h3>
+        <p id="modalUse"></p>
+        <h3>ตัวอย่าง</h3>
+        <div id="modalExample" class="prompt-box"></div>
+        <div class="button-row">
+            <button class="primary-btn" onclick="useCommand()">ใช้คำสั่งนี้</button>
+        </div>
+    </div>
+</div>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt="ภาพขยาย"></div>
+<script src="app.js"></script>
+</body>
+</html>

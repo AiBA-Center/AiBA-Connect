@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สร้างภาพด้วย AI — คัมภีร์ใช้ AI</title>
+<meta name="theme-color" content="#ff6f61">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <a class="back-home" href="index.html">🏠 หน้าหลัก</a>
+  <div class="topbar-title">สร้างภาพด้วย AI</div>
+  <div class="topbar-tools">
+    <button onclick="changeFontSize(1)" title="เพิ่มขนาดตัวอักษร">A+</button>
+    <button onclick="changeFontSize(-1)" title="ลดขนาดตัวอักษร">A-</button>
+    <button id="themeBtn" onclick="toggleTheme()" title="สลับธีม">🌙 มืด</button>
+  </div>
+</div></div>
+<div class="page-hero"><div class="page-hero-inner cat-create"><div class="page-emoji">✨</div><div><h1>สร้างภาพด้วย AI</h1><p>ตอบคำถามทีละข้อ แล้วรับ Prompt สำหรับให้ AI สร้างภาพ พร้อมคลังคำสั่งพิเศษ</p></div></div></div>
+<main class="page">
+<div id="resumeBanner" class="resume-banner">
+  <div><strong>พบงานที่ทำค้างไว้ในหน้านี้</strong> <span id="resumeInfo"></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="primary-btn" style="padding:10px 18px;font-size:17px;" onclick="restoreWork()">ทำต่อจากเดิม</button>
+    <button class="danger-btn" style="padding:10px 18px;font-size:17px;" onclick="discardWork()">เริ่มใหม่</button>
+  </div>
+</div>
+<section id="builder" class="builder active">
+        <p class="section-description">ตอบคำถามง่าย ๆ แล้วระบบจะช่วยจัด Prompt ให้คุณ</p>
+
+        <!-- STEP 1 -->
+        <div class="step">
+            <div>
+                <span class="step-number">1</span>
+                <span class="step-title">คุณอยากสร้างภาพอะไร?</span>
+            </div>
+            <p class="step-help">ตัวอย่างเช่น บ้าน รถ อาหาร คน สัตว์ หรือสินค้า</p>
+            <textarea
+                id="subject"
+                class="large-textarea"
+                placeholder="พิมพ์สิ่งที่คุณอยากสร้าง เช่น รถยนต์ไฟฟ้าสีขาว"
+                oninput="refreshPrompt()"
+            ></textarea>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="step">
+            <div>
+                <span class="step-number">2</span>
+                <span class="step-title">อยากให้ภาพเป็นแบบไหน?</span>
+            </div>
+            <p class="step-help">เลือกแบบที่คุณชอบ (กดซ้ำเพื่อยกเลิก)</p>
+            <div class="choice-grid">
+                <button class="choice" data-group="style" data-value="ภาพถ่ายเหมือนจริง" onclick="selectChoice(this)">
+                    <span class="choice-icon">📷</span>ภาพเหมือนจริง
+                </button>
+                <button class="choice" data-group="style" data-value="ภาพ 3 มิติ" onclick="selectChoice(this)">
+                    <span class="choice-icon">🧊</span>ภาพ 3 มิติ
+                </button>
+                <button class="choice" data-group="style" data-value="ภาพวาด" onclick="selectChoice(this)">
+                    <span class="choice-icon">🎨</span>ภาพวาด
+                </button>
+                <button class="choice" data-group="style" data-value="ภาพการ์ตูน" onclick="selectChoice(this)">
+                    <span class="choice-icon">🖼</span>ภาพการ์ตูน
+                </button>
+                <button class="choice" data-group="style" data-value="ภาพโฆษณาสินค้า" onclick="selectChoice(this)">
+                    <span class="choice-icon">🏷</span>ภาพโฆษณา
+                </button>
+                <button class="choice" data-group="style" data-value="ภาพทางการ" onclick="selectChoice(this)">
+                    <span class="choice-icon">🏢</span>ภาพทางการ
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="step">
+            <div>
+                <span class="step-number">3</span>
+                <span class="step-title">อยากมองภาพแบบไหน?</span>
+            </div>
+            <p class="step-help">เลือกมุมมองของภาพ</p>
+            <div class="choice-grid">
+                <button class="choice" data-group="view" data-value="มองด้านหน้า" onclick="selectChoice(this)">
+                    <span class="choice-icon">⬆</span>ด้านหน้า
+                </button>
+                <button class="choice" data-group="view" data-value="มองจากด้านบน" onclick="selectChoice(this)">
+                    <span class="choice-icon">⬇</span>มองจากด้านบน
+                </button>
+                <button class="choice" data-group="view" data-value="มุมมองรอบด้าน" onclick="selectChoice(this)">
+                    <span class="choice-icon">🔄</span>รอบด้าน
+                </button>
+                <button class="choice" data-group="view" data-value="ภาพระยะใกล้ เห็นรายละเอียดชัดเจน" onclick="selectChoice(this)">
+                    <span class="choice-icon">🔍</span>เห็นรายละเอียด
+                </button>
+                <button class="choice" data-group="view" data-value="เห็นโครงสร้างภายใน" onclick="selectChoice(this)">
+                    <span class="choice-icon">🔎</span>เห็นด้านใน
+                </button>
+                <button class="choice" data-group="view" data-value="แยกชิ้นส่วนออกจากกัน" onclick="selectChoice(this)">
+                    <span class="choice-icon">🧩</span>แยกชิ้นส่วน
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="step">
+            <div>
+                <span class="step-number">4</span>
+                <span class="step-title">อยากให้แสงเป็นแบบไหน?</span>
+            </div>
+            <p class="step-help">ถ้าไม่แน่ใจ สามารถข้ามได้</p>
+            <div class="choice-grid">
+                <button class="choice" data-group="light" data-value="แสงธรรมชาติ" onclick="selectChoice(this)">
+                    <span class="choice-icon">☀</span>แสงธรรมชาติ
+                </button>
+                <button class="choice" data-group="light" data-value="แสงสตูดิโอ" onclick="selectChoice(this)">
+                    <span class="choice-icon">💡</span>แสงสตูดิโอ
+                </button>
+                <button class="choice" data-group="light" data-value="แสงนุ่ม ดูอบอุ่น" onclick="selectChoice(this)">
+                    <span class="choice-icon">🌤</span>แสงนุ่ม
+                </button>
+                <button class="choice" data-group="light" data-value="แสงแบบภาพยนตร์" onclick="selectChoice(this)">
+                    <span class="choice-icon">🎬</span>แสงภาพยนตร์
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="step">
+            <div>
+                <span class="step-number">5</span>
+                <span class="step-title">อยากให้พื้นหลังเป็นแบบไหน?</span>
+            </div>
+            <p class="step-help">เลือกตามลักษณะภาพที่ต้องการ</p>
+            <div class="choice-grid">
+                <button class="choice" data-group="background" data-value="พื้นหลังสีขาวสะอาด" onclick="selectChoice(this)">
+                    <span class="choice-icon">⬜</span>สีขาว
+                </button>
+                <button class="choice" data-group="background" data-value="พื้นหลังเรียบง่าย" onclick="selectChoice(this)">
+                    <span class="choice-icon">▫</span>เรียบง่าย
+                </button>
+                <button class="choice" data-group="background" data-value="อยู่ในสถานที่จริงตามบริบท" onclick="selectChoice(this)">
+                    <span class="choice-icon">🏠</span>สถานที่จริง
+                </button>
+                <button class="choice" data-group="background" data-value="พื้นหลังแบบโปร่งใส" onclick="selectChoice(this)">
+                    <span class="choice-icon">◻</span>โปร่งใส
+                </button>
+            </div>
+        </div>
+
+        <!-- STEP 6 : SPECIAL COMMAND -->
+        <div class="step">
+            <div>
+                <span class="step-number">6</span>
+                <span class="step-title">อยากใช้คำสั่งพิเศษไหม?</span>
+            </div>
+            <p class="step-help">ส่วนนี้ไม่จำเป็นสำหรับมือใหม่</p>
+
+            <div id="commandChoices" class="choice-grid"></div>
+        </div>
+
+        <!-- GENERATE -->
+        <div class="button-row gen-row">
+            <button class="primary-btn" onclick="generatePrompt()">สร้าง Prompt ให้ฉัน</button>
+            <button class="secondary-btn" onclick="randomExample()">ลองตัวอย่าง</button>
+            <button class="danger-btn" onclick="clearBuilder()">เริ่มใหม่</button>
+        </div>
+
+        <!-- RESULT -->
+        <div id="result" class="result" style="display:none;">
+            <h3>Prompt ของคุณพร้อมแล้ว</h3>
+            <p>นำข้อความนี้ไปใช้กับ AI สร้างภาพที่คุณต้องการได้เลย
+               <span style="color:var(--muted);font-size:16px;">(เปลี่ยนตัวเลือกด้านบนได้ตลอด Prompt จะอัปเดตให้เอง)</span></p>
+            <div id="promptOutput" class="prompt-box"></div>
+            <div class="button-row">
+                <button class="primary-btn" onclick="copyPrompt()">คัดลอก Prompt</button>
+                <button class="secondary-btn" onclick="speakPrompt()">อ่านให้ฟัง</button>
+            </div>
+            <p id="copyMessage" style="color:var(--green);font-weight:bold;margin-top:15px;"></p>
+
+            <div class="open-app-row">
+                <p>ขั้นต่อไป: กดเปิดแอปที่ต้องการ (ระบบจะคัดลอก Prompt ให้อัตโนมัติ แล้วไปวางในช่องแชทได้เลย) — บนมือถือจะเปิดแอป ChatGPT / Gemini โดยตรงถ้าติดตั้งไว้</p>
+                <div class="button-row" style="margin-top:0;">
+                    <a class="app-btn gpt" href="https://chatgpt.com" target="_blank" rel="noopener" onclick="return copyForApp('promptOutput', 'copyMessage')">
+                        <span class="app-logo">G</span>เปิด ChatGPT
+                    </a>
+                    <a class="app-btn gemini" href="https://gemini.google.com/app" target="_blank" rel="noopener" onclick="return copyForApp('promptOutput', 'copyMessage')">
+                        <span class="app-logo">✦</span>เปิด Gemini
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+<section id="library" class="library">
+        <h2 class="section-title">คลังคำสั่งพิเศษ (สำหรับสร้างภาพ)</h2>
+        <p class="section-description">ไม่ต้องจำ เพียงดูว่าต้องการภาพแบบไหน แล้วกดเลือกได้เลย</p>
+
+        <div class="search-box">
+            <input
+                id="searchInput"
+                class="large-input"
+                type="text"
+                placeholder="ค้นหา เช่น แยกชิ้นส่วน, ด้านใน, 360 องศา..."
+                oninput="renderCommands()"
+            >
+        </div>
+
+        <div class="category-row">
+            <button class="category-btn active" onclick="filterCategory('ทั้งหมด', this)">ทั้งหมด</button>
+            <button class="category-btn" onclick="filterCategory('โครงสร้าง', this)">โครงสร้าง</button>
+            <button class="category-btn" onclick="filterCategory('มุมมอง', this)">มุมมอง</button>
+            <button class="category-btn" onclick="filterCategory('เทคนิค', this)">เทคนิค</button>
+            <button class="category-btn" onclick="filterCategory('สไตล์', this)">สไตล์</button>
+        </div>
+
+        <div id="commandGrid" class="command-grid"></div>
+    </section>
+</main>
+<aside class="related"><h3>ไปต่อที่เกี่ยวข้อง</h3><div class="related-grid"><a class="rel-card" href="page-poster.html"><div class="ic cat-create">🖼</div><div><b>สไตล์โปสเตอร์โฆษณาสินค้า</b><span>เลือกสไตล์จากภาพตัวอย่าง 10 แบบ รับ Prompt สำเร็จรูปสำหรับรู</span></div></a><a class="rel-card" href="page-greeting.html"><div class="ic cat-create">🌸</div><div><b>ภาพอวยพร</b><span>เลือกสไตล์ เปลี่ยนวัน คำอวยพร ชื่อ แล้วรับ Prompt สำเร็จรูป </span></div></a><a class="rel-card" href="page-flow.html"><div class="ic cat-video">🎞</div><div><b>ภาพนิ่ง → วิดีโอ 3 ช็อต</b><span>กำหนดการเคลื่อนกล้องและการเคลื่อนไหวทีละช็อต สำหรับ Google F</span></div></a></div></aside>
+
+<footer>
+    <p style="font-size:20px;font-weight:bold;color:#ffffff;">คัมภีร์ใช้ AI</p>
+    <p>ออกแบบให้ทุกคนสามารถเริ่มต้นใช้งาน AI ได้ง่าย</p>
+    <p style="opacity:.8;font-size:14px;margin-top:12px;">หมายเหตุ: คำสั่งในเว็บนี้เป็นคำสำคัญสำหรับช่วยเขียน Prompt ไม่ใช่คำสั่งที่ AI ทุกระบบรองรับโดยตรง</p>
+</footer>
+<div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <hr>
+        <h3>ใช้เมื่อไหร่?</h3>
+        <p id="modalUse"></p>
+        <h3>ตัวอย่าง</h3>
+        <div id="modalExample" class="prompt-box"></div>
+        <div class="button-row">
+            <button class="primary-btn" onclick="useCommand()">ใช้คำสั่งนี้</button>
+        </div>
+    </div>
+</div>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt="ภาพขยาย"></div>
+<script src="app.js"></script>
+</body>
+</html>

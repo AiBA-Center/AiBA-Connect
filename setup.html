@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตั้งค่าเกมปิดท้าย (วิทยากร) — คัมภีร์ใช้ AI</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6fb;--surface:#fff;--surface-2:#eef3fa;--line:#d9e1ee;--line-2:#b7c6dd;--text:#13213a;--muted:#55657f;--cyan:#0b6fb8;--accent-2:#2f5fe0;--green:#1e8f5a;--red:#c53030;--amber:#c96f00;--amber-bg:#fff3df;--amber-line:#f0a53a;--head:"Kanit","Noto Sans Thai",Tahoma,sans-serif;--body:"Sarabun","Noto Sans Thai",Tahoma,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:18px;line-height:1.65}
+h1,h2,h3{font-family:var(--head);font-weight:600;margin:0 0 8px}
+.wrap{max-width:860px;margin:auto;padding:20px 16px 60px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 14px 40px rgba(20,40,80,.08);margin-bottom:18px}
+.muted{color:var(--muted)}
+.step{display:flex;gap:14px;align-items:flex-start;margin:18px 0}
+.num{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:700;flex:none}
+.step h3{font-size:20px;margin-bottom:4px}
+.btn{border:1px solid transparent;border-radius:14px;padding:13px 20px;font-size:18px;font-weight:700;font-family:var(--head);cursor:pointer}
+.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--accent-2));color:#fff}
+.btn.secondary{background:var(--surface-2);color:var(--text);border-color:var(--line-2)}
+pre{background:#0a1629;color:#eaf2ff;border-radius:14px;padding:16px;font-size:13.5px;line-height:1.5;overflow:auto;max-height:280px;margin:10px 0}
+input[type=text]{width:100%;border:1px solid var(--line-2);border-radius:14px;padding:14px 16px;font-size:17px;font-family:inherit;background:#fff;color:var(--text);outline:none}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(11,111,184,.15)}
+label{display:block;font-weight:600;margin:14px 0 6px}
+.status{margin-top:10px;font-weight:700;min-height:26px}.ok{color:var(--green)}.err{color:var(--red)}
+.note{border-left:4px solid var(--amber-line);background:var(--amber-bg);padding:12px 16px;border-radius:0 12px 12px 0;font-size:16px;margin:12px 0}
+code{background:var(--surface-2);padding:2px 6px;border-radius:6px;font-size:15px}
+#qr{display:flex;justify-content:center;margin:14px 0}
+.hidden{display:none}
+.links{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:700px){.links{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+  <h1>⚙ ตั้งค่าเกมปิดท้ายการอบรม</h1>
+  <p class="muted">ทำครั้งเดียว ใช้เวลาประมาณ 5 นาที ไม่ต้องสร้าง Google Form — แค่สร้าง Google Sheet 1 ไฟล์แล้ววางโค้ดที่เตรียมไว้ให้ ระบบจะสร้างตารางเก็บข้อมูลเองอัตโนมัติ</p>
+
+  <div class="step"><div class="num">1</div><div>
+    <h3>สร้าง Google Sheet ใหม่</h3>
+    ไปที่ <a href="https://sheets.new" target="_blank" rel="noopener">sheets.new</a> ตั้งชื่อไฟล์ เช่น <code>เกมปิดท้ายการอบรม</code> (ไม่ต้องพิมพ์อะไรในตาราง)
+  </div></div>
+
+  <div class="step"><div class="num">2</div><div>
+    <h3>เปิดตัวเขียนสคริปต์</h3>
+    ในชีต กดเมนู <b>ส่วนขยาย (Extensions) → Apps Script</b> จะเปิดแท็บใหม่ที่มีโค้ดตัวอย่าง <code>function myFunction() {}</code> ให้ลบทิ้งทั้งหมด
+  </div></div>
+
+  <div class="step"><div class="num">3</div><div>
+    <h3>วางโค้ดนี้แทน กดบันทึก (ไอคอนแผ่นดิสก์) แล้วทดสอบ</h3>
+    <div class="note" style="margin:0 0 10px;border-color:var(--red)"><b>เคยวางโค้ดเวอร์ชันก่อนแล้ว?</b> ต้องแทนด้วยโค้ดชุดนี้ (เวอร์ชัน 2 มีระบบให้แอดมินกดข้อถัดไป) แล้วกด <b>Deploy → Manage deployments → ✏ แก้ไข → Version: New version → Deploy</b> URL เดิมจะใช้ได้ต่อ ไม่ต้องสร้างลิงก์ใหม่</div>
+    <div class="note" style="margin:0 0 10px">
+      <b>วิธีทดสอบที่ถูกต้อง:</b> ที่แถบด้านบนของ Apps Script ตรงช่องเลือกฟังก์ชัน (ข้าง ▶ เรียกใช้) เลือก <code>setup</code> แล้วกด ▶ ครั้งแรก Google จะขอสิทธิ์ → อนุญาต → ด้านล่างจะขึ้น "พร้อมใช้งาน..." และในชีตจะมีแท็บ <code>responses</code> โผล่มา<br>
+      <b>ห้ามกด ▶ ที่ doPost หรือ doGet</b> — สองฟังก์ชันนี้ Google เป็นคนเรียกตอนมีข้อมูลส่งมา ถ้ากดเองจะขึ้น error ซึ่งไม่ได้แปลว่าโค้ดผิด
+    </div>
+    <button class="btn secondary" onclick="copyCode()">📋 คัดลอกโค้ดทั้งหมด</button> <span id="copyMsg" class="status" style="display:inline"></span>
+<pre id="code">// ===== คัมภีร์ใช้ AI — ตัวเก็บข้อมูลเกมปิดท้าย (เวอร์ชัน 2: แอดมินคุมข้อถัดไป) =====
+// วิธีทดสอบ: เลือกฟังก์ชัน "setup" ด้านบน แล้วกด ▶ เรียกใช้ (ห้ามกดเรียกใช้ doPost/doGet ตรง ๆ)
+
+var SHEET_NAME = 'responses';
+var HEAD = ['เวลาบันทึก', 'ประเภท', 'ชื่อเล่น', 'คะแนน', 'เวลา(วินาที)', 'ข้อความ', 'รูป', 'รอบ/อารมณ์'];
+
+function getSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(SHEET_NAME);
+  if (!sh) { sh = ss.insertSheet(SHEET_NAME); sh.appendRow(HEAD); sh.setFrozenRows(1); }
+  return sh;
+}
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+function props_() { return PropertiesService.getScriptProperties(); }
+function getState_() {
+  var raw = props_().getProperty('STATE');
+  var st = raw ? JSON.parse(raw) : { phase: 'lobby', qi: -1, startedAt: 0, round: 1 };
+  st.now = Date.now();
+  return st;
+}
+function setup() {
+  var sh = getSheet_();
+  if (!props_().getProperty('STATE')) props_().setProperty('STATE', JSON.stringify({ phase: 'lobby', qi: -1, startedAt: 0, round: 1 }));
+  Logger.log('พร้อมใช้งาน ตาราง "' + SHEET_NAME + '" มีข้อมูล ' + Math.max(0, sh.getLastRow() - 1) + ' แถว');
+}
+
+function doPost(e) {
+  try {
+    if (!e || !e.postData) return jsonOut_({ ok: false, error: 'เรียกใช้โดยไม่มีข้อมูล (ให้ทดสอบด้วยฟังก์ชัน setup แทน)' });
+    var d = JSON.parse(e.postData.contents || '{}');
+    if (!d.type) return jsonOut_({ ok: false, error: 'no type' });
+
+    // ---- คำสั่งจากแอดมิน (จอกลาง) ----
+    if (d.type === 'control') {
+      var saved = props_().getProperty('HOST_KEY');
+      if (!saved) { props_().setProperty('HOST_KEY', String(d.key || '')); saved = String(d.key || ''); }
+      if (!d.key || d.key !== saved) return jsonOut_({ ok: false, error: 'รหัสแอดมินไม่ถูกต้อง' });
+      var st = getState_();
+      if (d.action === 'start')      { st.phase = 'question'; st.qi = 0; st.startedAt = Date.now(); }
+      else if (d.action === 'next')  { st.phase = 'question'; st.qi = (st.qi < 0 ? 0 : st.qi + 1); st.startedAt = Date.now(); }
+      else if (d.action === 'end')   { st.phase = 'end'; }
+      else if (d.action === 'reset') { st.phase = 'lobby'; st.qi = -1; st.startedAt = 0; st.round = (st.round || 1) + 1; }
+      else if (d.action === 'lobby') { st.phase = 'lobby'; st.qi = -1; st.startedAt = 0; }
+      delete st.now;
+      props_().setProperty('STATE', JSON.stringify(st));
+      return jsonOut_({ ok: true, state: getState_() });
+    }
+
+    // ---- ข้อมูลจากมือถือผู้เข้าอบรม ----
+    var lock = LockService.getScriptLock(); lock.waitLock(5000);
+    getSheet_().appendRow([new Date(), String(d.type), String(d.name || '').slice(0, 40), Number(d.score) || 0,
+      Number(d.time) || 0, String(d.message || '').slice(0, 1000), String(d.photo || ''), String(d.mood || '')]);
+    lock.releaseLock();
+    return jsonOut_({ ok: true });
+  } catch (err) { return jsonOut_({ ok: false, error: String(err) }); }
+}
+
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.action === 'state') return jsonOut_({ ok: true, state: getState_() });
+  var sh = getSheet_();
+  if (p.action === 'ping') return jsonOut_({ ok: true, rows: Math.max(0, sh.getLastRow() - 1), state: getState_() });
+  var v = sh.getDataRange().getValues();
+  var rows = [];
+  for (var i = 1; i < v.length; i++) {
+    var r = v[i];
+    rows.push({ id: i - 1, ts: r[0], type: r[1], name: r[2], score: r[3], time: r[4], message: r[5], photo: r[6], mood: r[7] });
+  }
+  return jsonOut_({ ok: true, rows: rows, state: getState_() });
+}</pre>
+  </div></div>
+
+  <div class="step"><div class="num">4</div><div>
+    <h3>ทำให้ใช้งานได้ (Deploy)</h3>
+    กดปุ่ม <b>ทำให้ใช้งานได้ → การทำให้ใช้งานได้ใหม่</b> (Deploy → New deployment) → กดไอคอนเฟือง เลือกประเภท <b>เว็บแอป</b> → ตั้งค่า:
+    <ul style="margin:6px 0 0">
+      <li>ดำเนินการในฐานะ: <b>ฉัน</b></li>
+      <li>ผู้ที่มีสิทธิ์เข้าถึง: <b>ทุกคน</b> (Anyone) ← สำคัญ ไม่งั้นมือถือผู้เข้าอบรมส่งข้อมูลไม่ได้</li>
+    </ul>
+    กด "ทำให้ใช้งานได้" → Google จะขอสิทธิ์ ให้กด อนุญาต (ถ้าเจอหน้า "ยังไม่ได้ยืนยันแอป" ให้กด ขั้นสูง → ไปที่... (ไม่ปลอดภัย) ซึ่งเป็นปกติสำหรับสคริปต์ที่เราเขียนเอง) → คัดลอก <b>URL ของเว็บแอป</b> ที่ลงท้ายด้วย <code>/exec</code>
+    <div class="note">ถ้าภายหลังแก้โค้ด ต้อง Deploy ใหม่เป็น "เวอร์ชันใหม่" ทุกครั้ง URL เดิมจึงจะอัปเดต</div>
+  </div></div>
+
+  <div class="step"><div class="num">5</div><div>
+    <h3>วาง URL แล้วสร้างลิงก์</h3>
+    <label>URL ของเว็บแอป (ลงท้าย /exec)</label>
+    <input id="api" type="text" placeholder="https://script.google.com/macros/s/AKfycb.../exec">
+    <label>รหัสแอดมิน (ใช้กดควบคุมเกมบนจอกลาง — ตั้งอะไรก็ได้ จำง่าย ๆ)</label>
+    <input id="key" type="text" placeholder="เช่น kampee2569" maxlength="30">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <button class="btn primary" onclick="save()">บันทึกและสร้างลิงก์</button>
+      <button class="btn secondary" onclick="test()">ทดสอบการเชื่อมต่อ</button>
+    </div>
+    <p id="st" class="status"></p>
+  </div></div>
+</div>
+
+<div id="out" class="card hidden">
+  <h2>✅ พร้อมใช้งาน</h2>
+  <div class="links">
+    <div>
+      <label>ลิงก์สำหรับผู้เข้าอบรม (ให้สแกน QR นี้)</label>
+      <input id="playerLink" type="text" readonly onclick="this.select()">
+      <div id="qr"></div>
+      <button class="btn secondary" onclick="copyLink('playerLink')">คัดลอกลิงก์</button>
+    </div>
+    <div>
+      <label>ลิงก์จอกลาง (เปิดบนคอมที่ต่อโปรเจกเตอร์)</label>
+      <input id="screenLink" type="text" readonly onclick="this.select()">
+      <button class="btn secondary" onclick="copyLink('screenLink')">คัดลอกลิงก์</button>
+      <a class="btn primary" style="display:inline-block;margin-top:10px;text-decoration:none" id="openScreen" target="_blank">เปิดจอกลาง ↗</a>
+    </div>
+  </div>
+  <div class="note" style="margin-top:18px">
+    <b>วันงาน:</b> เปิดจอกลางบนโปรเจกเตอร์ → ฉาย QR ให้สแกน → ผู้เข้าอบรมใส่ชื่อเล่น+รูป แล้วกด "เข้าห้องควิซ" (จะเห็นหน้ารอ) → แอดมินกด <b>▶ เริ่มข้อ 1</b> บนจอกลาง ทุกเครื่องจะเห็นคำถามพร้อมกัน → กด <b>ข้อถัดไป</b> ทีละข้อ → กด <b>จบเกม</b> → <b>🏆 ประกาศผล</b><br>
+    <b>ลิงก์จอกลางมีรหัสแอดมินอยู่ในลิงก์</b> อย่าแชร์ให้ผู้เข้าอบรม<br>
+    <b>ล้างข้อมูลทดสอบ:</b> ลบแถวในชีต <code>responses</code> (เก็บแถวหัวตารางไว้) หรือลบชีตทิ้ง ระบบจะสร้างใหม่เอง
+  </div>
+</div>
+</div>
+
+<script>
+const LS = "kampeeGame:";
+function b64(o) { return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(o))))); }
+function copyCode() { navigator.clipboard.writeText(document.getElementById("code").textContent).then(() => { const m = document.getElementById("copyMsg"); m.className = "status ok"; m.textContent = "คัดลอกแล้ว ✓"; setTimeout(() => m.textContent = "", 3000); }); }
+function getApi() { const v = document.getElementById("api").value.trim(); if (!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(v)) throw new Error("URL ต้องเป็น https://script.google.com/macros/s/.../exec"); return v; }
+function test() {
+  const st = document.getElementById("st");
+  try { const api = getApi(); st.className = "status"; st.textContent = "กำลังทดสอบ...";
+    fetch(api + "?action=ping&_=" + Date.now()).then(r => r.json()).then(j => { if (!j.ok) throw 0; st.className = "status ok"; st.textContent = `เชื่อมต่อสำเร็จ ✓ (มีข้อมูล ${j.rows} แถว)`; })
+      .catch(() => { st.className = "status err"; st.textContent = "เชื่อมต่อไม่ได้ — ตรวจว่า Deploy เป็นเว็บแอป และ 'ผู้ที่มีสิทธิ์เข้าถึง' เป็น ทุกคน"; });
+  } catch (e) { st.className = "status err"; st.textContent = e.message; }
+}
+function save() {
+  const st = document.getElementById("st");
+  try {
+    const api = getApi(); const key = document.getElementById("key").value.trim();
+    if (key.length < 4) throw new Error("รหัสแอดมินต้องยาวอย่างน้อย 4 ตัวอักษร");
+    const cfg = { api }, hostCfg = { api, key };
+    localStorage.setItem(LS + "cfg", JSON.stringify(hostCfg));
+    const base = location.href.split("?")[0].split("#")[0].replace(/setup\.html$/, "");
+    const pl = base + "game.html#cfg=" + b64(cfg), sl = base + "screen.html#cfg=" + b64(hostCfg);
+    document.getElementById("playerLink").value = pl; document.getElementById("screenLink").value = sl;
+    document.getElementById("openScreen").href = sl;
+    const qr = document.getElementById("qr"); qr.innerHTML = ""; const img = new Image(); img.width = 240; img.height = 240; img.alt = "QR";
+    img.src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=" + encodeURIComponent(pl); qr.appendChild(img);
+    document.getElementById("out").classList.remove("hidden"); document.getElementById("out").scrollIntoView({ behavior: "smooth" });
+    st.className = "status ok"; st.textContent = "บันทึกแล้ว ✓";
+  } catch (e) { st.className = "status err"; st.textContent = e.message; }
+}
+function copyLink(id) { const el = document.getElementById(id); navigator.clipboard.writeText(el.value).then(() => { el.select(); }); }
+try { const c = JSON.parse(localStorage.getItem(LS + "cfg")); if (c && c.api) { document.getElementById("api").value = c.api; if (c.key) document.getElementById("key").value = c.key; } } catch (e) {}
+</script>
+</body>
+</html>

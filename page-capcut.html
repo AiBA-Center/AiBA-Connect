@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สั่งตัดวิดีโอใน CapCut — คัมภีร์ใช้ AI</title>
+<meta name="theme-color" content="#ff6f61">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <a class="back-home" href="index.html">🏠 หน้าหลัก</a>
+  <div class="topbar-title">สั่งตัดวิดีโอใน CapCut</div>
+  <div class="topbar-tools">
+    <button onclick="changeFontSize(1)" title="เพิ่มขนาดตัวอักษร">A+</button>
+    <button onclick="changeFontSize(-1)" title="ลดขนาดตัวอักษร">A-</button>
+    <button id="themeBtn" onclick="toggleTheme()" title="สลับธีม">🌙 มืด</button>
+  </div>
+</div></div>
+<div class="page-hero"><div class="page-hero-inner cat-video"><div class="page-emoji">✂</div><div><h1>สั่งตัดวิดีโอใน CapCut</h1><p>สร้าง Prompt สั้น ๆ สำหรับฟีเจอร์ตัดอัตโนมัติด้วย AI พร้อมนับตัวอักษร</p></div></div></div>
+<main class="page">
+<div id="resumeBanner" class="resume-banner">
+  <div><strong>พบงานที่ทำค้างไว้ในหน้านี้</strong> <span id="resumeInfo"></span></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <button class="primary-btn" style="padding:10px 18px;font-size:17px;" onclick="restoreWork()">ทำต่อจากเดิม</button>
+    <button class="danger-btn" style="padding:10px 18px;font-size:17px;" onclick="discardWork()">เริ่มใหม่</button>
+  </div>
+</div>
+<section id="storyBuilder" class="builder active">
+        <p class="section-description">
+            ฟีเจอร์ตัดอัตโนมัติด้วย AI ของ CapCut รับได้แค่ Prompt สั้น ๆ ว่า "อยากให้ตัดออกมาแบบไหน"
+            ตอบคำถามด้านล่าง ระบบจะเรียบเรียงเป็น Prompt กระชับ พร้อมนับตัวอักษรให้ไม่เกินที่กำหนด
+        </p>
+
+        <div class="step">
+            <div><span class="step-number">1</span><span class="step-title">วิดีโอนี้เกี่ยวกับอะไร?</span></div>
+            <p class="step-help">บอกสั้น ๆ ว่าเป็นคลิปอะไร และมีฟุตเทจอะไรอยู่บ้าง</p>
+            <textarea id="storyTopic" class="large-textarea"
+                placeholder="เช่น รีวิวร้านก๋วยเตี๋ยวเรืออยุธยา มีคลิปถ่ายหน้าร้าน คุณยายลวกเส้น น้ำซุปเดือด และตอนกิน"
+                oninput="refreshStoryPrompt()"></textarea>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">2</span><span class="step-title">เป็นวิดีโอประเภทไหน?</span></div>
+            <p class="step-help">เลือกได้ 1 อย่าง</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="type" data-value="วิดีโอรีวิว" data-en="product/place review video" onclick="selectStoryChoice(this)"><span class="choice-icon">⭐</span>รีวิว</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโอโปรโมทร้าน" data-en="promo video for a shop/brand" onclick="selectStoryChoice(this)"><span class="choice-icon">🏪</span>โปรโมทร้าน</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโอสอนวิธีทำทีละขั้น" data-en="step-by-step tutorial video" onclick="selectStoryChoice(this)"><span class="choice-icon">🛠</span>สอนวิธีทำ</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโอเล่าเรื่อง" data-en="storytelling video" onclick="selectStoryChoice(this)"><span class="choice-icon">📖</span>เล่าเรื่อง</button>
+                <button class="choice" data-sgroup="type" data-value="Vlog ท่องเที่ยว" data-en="travel vlog" onclick="selectStoryChoice(this)"><span class="choice-icon">🎒</span>Vlog/ท่องเที่ยว</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโอให้ความรู้" data-en="educational explainer video" onclick="selectStoryChoice(this)"><span class="choice-icon">🧠</span>ให้ความรู้</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโอสร้างแรงบันดาลใจ" data-en="motivational video" onclick="selectStoryChoice(this)"><span class="choice-icon">🔥</span>แรงบันดาลใจ</button>
+                <button class="choice" data-sgroup="type" data-value="วิดีโออาหาร" data-en="food video" onclick="selectStoryChoice(this)"><span class="choice-icon">🍜</span>อาหาร</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">3</span><span class="step-title">สัดส่วนและความยาว</span></div>
+            <p class="step-help">ตามแพลตฟอร์มที่จะลง</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="length" data-value="แนวตั้ง 9:16 ยาว 15 วินาที" data-en="vertical 9:16, 15 seconds" onclick="selectStoryChoice(this)"><span class="choice-icon">⏱</span>9:16 · 15 วิ</button>
+                <button class="choice" data-sgroup="length" data-value="แนวตั้ง 9:16 ยาว 30 วินาที" data-en="vertical 9:16, 30 seconds" onclick="selectStoryChoice(this)"><span class="choice-icon">🎵</span>9:16 · 30 วิ</button>
+                <button class="choice" data-sgroup="length" data-value="แนวตั้ง 9:16 ยาว 60 วินาที" data-en="vertical 9:16, 60 seconds" onclick="selectStoryChoice(this)"><span class="choice-icon">📸</span>9:16 · 60 วิ</button>
+                <button class="choice" data-sgroup="length" data-value="แนวตั้ง 9:16 ยาว 90 วินาที" data-en="vertical 9:16, 90 seconds" onclick="selectStoryChoice(this)"><span class="choice-icon">👍</span>9:16 · 90 วิ</button>
+                <button class="choice" data-sgroup="length" data-value="แนวนอน 16:9 ยาว 1 นาที" data-en="horizontal 16:9, 1 minute" onclick="selectStoryChoice(this)"><span class="choice-icon">🖥</span>16:9 · 1 นาที</button>
+                <button class="choice" data-sgroup="length" data-value="แนวนอน 16:9 ยาว 3 นาที" data-en="horizontal 16:9, 3 minutes" onclick="selectStoryChoice(this)"><span class="choice-icon">🎞</span>16:9 · 3 นาที</button>
+                <button class="choice" data-sgroup="length" data-value="สี่เหลี่ยม 1:1 ยาว 30 วินาที" data-en="square 1:1, 30 seconds" onclick="selectStoryChoice(this)"><span class="choice-icon">⬛</span>1:1 · 30 วิ</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">4</span><span class="step-title">อยากให้ตัดจังหวะแบบไหน?</span></div>
+            <p class="step-help">สไตล์การตัดต่อหลัก</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="pace" data-value="ตัดเร็ว ตามจังหวะบีตเพลง" data-en="fast cuts synced to the music beat" onclick="selectStoryChoice(this)"><span class="choice-icon">⚡</span>ตัดเร็วตามบีต</button>
+                <button class="choice" data-sgroup="pace" data-value="ตัดช้า นุ่มนวล ปล่อยช็อตยาว" data-en="slow, smooth pacing with longer shots" onclick="selectStoryChoice(this)"><span class="choice-icon">🌊</span>ช้า นุ่มนวล</button>
+                <button class="choice" data-sgroup="pace" data-value="สไตล์ภาพยนตร์ มีสโลว์โมชัน" data-en="cinematic style with slow motion" onclick="selectStoryChoice(this)"><span class="choice-icon">🎬</span>แบบภาพยนตร์</button>
+                <button class="choice" data-sgroup="pace" data-value="สไตล์ Vlog เป็นธรรมชาติ" data-en="natural vlog-style editing" onclick="selectStoryChoice(this)"><span class="choice-icon">📹</span>สไตล์ Vlog</button>
+                <button class="choice" data-sgroup="pace" data-value="สไตล์ TikTok เทรนด์ฮิต ซูมเข้าออก" data-en="trendy TikTok style with punch-in zooms" onclick="selectStoryChoice(this)"><span class="choice-icon">📱</span>สไตล์ TikTok</button>
+                <button class="choice" data-sgroup="pace" data-value="เรียบง่าย สะอาด ไม่มีเอฟเฟกต์เยอะ" data-en="clean minimal editing with few effects" onclick="selectStoryChoice(this)"><span class="choice-icon">▫</span>เรียบง่าย</button>
+                <button class="choice" data-sgroup="pace" data-value="ไดนามิก มีการเคลื่อนกล้องและซูมตลอด" data-en="dynamic editing with constant motion and zooms" onclick="selectStoryChoice(this)"><span class="choice-icon">🔄</span>ไดนามิก</button>
+                <button class="choice" data-sgroup="pace" data-value="แบบไฮไลต์ รวมช็อตเด็ดสั้น ๆ" data-en="highlight-reel style with the best short moments" onclick="selectStoryChoice(this)"><span class="choice-icon">✨</span>ไฮไลต์</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">5</span><span class="step-title">อารมณ์และเพลงประกอบ</span></div>
+            <p class="step-help">CapCut จะเลือกเพลงและโทนสีให้ตามนี้</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="mood" data-value="สนุก เพลงจังหวะเร็ว" data-en="upbeat and fun with energetic music" onclick="selectStoryChoice(this)"><span class="choice-icon">🎉</span>สนุก</button>
+                <button class="choice" data-sgroup="mood" data-value="ซึ้ง อบอุ่น เพลงเบา ๆ" data-en="warm and emotional with soft music" onclick="selectStoryChoice(this)"><span class="choice-icon">🥹</span>ซึ้ง/อบอุ่น</button>
+                <button class="choice" data-sgroup="mood" data-value="ชิล ผ่อนคลาย เพลง Lo-fi" data-en="chill and relaxed with lo-fi music" onclick="selectStoryChoice(this)"><span class="choice-icon">🌿</span>ชิล</button>
+                <button class="choice" data-sgroup="mood" data-value="ยิ่งใหญ่ เร้าใจ เพลงแบบหนัง" data-en="epic and dramatic with cinematic music" onclick="selectStoryChoice(this)"><span class="choice-icon">🔥</span>ยิ่งใหญ่</button>
+                <button class="choice" data-sgroup="mood" data-value="หรูหรา พรีเมียม เพลงนุ่ม" data-en="luxurious premium feel with elegant music" onclick="selectStoryChoice(this)"><span class="choice-icon">💎</span>หรูหรา</button>
+                <button class="choice" data-sgroup="mood" data-value="น่าเชื่อถือ เพลงเบามาก" data-en="professional and trustworthy with subtle background music" onclick="selectStoryChoice(this)"><span class="choice-icon">📊</span>น่าเชื่อถือ</button>
+                <button class="choice" data-sgroup="mood" data-value="ตลก สดใส เพลงป๊อป" data-en="funny and bright with pop music" onclick="selectStoryChoice(this)"><span class="choice-icon">😂</span>ตลก</button>
+                <button class="choice" data-sgroup="mood" data-value="ไม่ต้องใส่เพลง ใช้เสียงต้นฉบับ" data-en="no music, keep original audio" onclick="selectStoryChoice(this)"><span class="choice-icon">🔇</span>เสียงต้นฉบับ</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">6</span><span class="step-title">ข้อความและคำบรรยาย</span></div>
+            <p class="step-help">เลือกได้ 1 อย่าง</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="text" data-value="ใส่คำบรรยายอัตโนมัติ (Auto captions) ตลอดคลิป" data-en="add auto captions throughout" onclick="selectStoryChoice(this)"><span class="choice-icon">💬</span>คำบรรยายอัตโนมัติ</button>
+                <button class="choice" data-sgroup="text" data-value="ใส่ข้อความ Hook ตัวใหญ่ใน 3 วินาทีแรก และคำบรรยายอัตโนมัติ" data-en="add a big bold hook text in the first 3 seconds plus auto captions" onclick="selectStoryChoice(this)"><span class="choice-icon">🪝</span>Hook ใหญ่ + คำบรรยาย</button>
+                <button class="choice" data-sgroup="text" data-value="ใส่ข้อความหัวข้อสั้น ๆ ในแต่ละช่วง" data-en="add short title text for each section" onclick="selectStoryChoice(this)"><span class="choice-icon">🏷</span>หัวข้อแต่ละช่วง</button>
+                <button class="choice" data-sgroup="text" data-value="ไม่ต้องใส่ข้อความ" data-en="no text overlays" onclick="selectStoryChoice(this)"><span class="choice-icon">🚫</span>ไม่ใส่ข้อความ</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div>
+                <span class="step-number">7</span>
+                <span class="step-title">อยากให้ทำอะไรเพิ่ม?</span>
+                <span class="multi-hint">เลือกได้หลายข้อ</span>
+            </div>
+            <p class="step-help">ถ้า Prompt ยาวเกินกำหนด ระบบจะตัดข้อนี้ออกก่อนโดยอัตโนมัติ</p>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ใส่ทรานสิชันนุ่มนวลระหว่างช็อต" data-en="smooth transitions between shots" onclick="selectStoryChoice(this)"><span class="choice-icon">🔀</span>ทรานสิชัน</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ปรับโทนสีให้อบอุ่น สว่าง" data-en="warm bright color grading" onclick="selectStoryChoice(this)"><span class="choice-icon">🌅</span>สีอบอุ่น</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ปรับโทนสีให้เข้ม ดูแบบหนัง" data-en="moody cinematic color grading" onclick="selectStoryChoice(this)"><span class="choice-icon">🌑</span>สีเข้มแบบหนัง</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ใส่เสียงพากย์ AI สรุปเนื้อหา" data-en="add an AI voiceover narrating the content" onclick="selectStoryChoice(this)"><span class="choice-icon">🤖</span>เสียงพากย์ AI</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ตัดช่วงเงียบและช่วงพูดผิดออก" data-en="remove silences and mistakes" onclick="selectStoryChoice(this)"><span class="choice-icon">✂</span>ตัดช่วงเงียบ</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ใส่เอฟเฟกต์เสียงประกอบ (Sound effects)" data-en="add sound effects" onclick="selectStoryChoice(this)"><span class="choice-icon">🔊</span>เอฟเฟกต์เสียง</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="เพิ่มสติกเกอร์หรืออีโมจิเล็กน้อย" data-en="add a few stickers or emojis" onclick="selectStoryChoice(this)"><span class="choice-icon">😊</span>สติกเกอร์</button>
+                <button class="choice" data-sgroup="extras" data-multi="1" data-value="ปิดท้ายด้วยข้อความชวนกดติดตาม" data-en="end with a follow/subscribe call to action" onclick="selectStoryChoice(this)"><span class="choice-icon">📣</span>CTA ท้ายคลิป</button>
+            </div>
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">8</span><span class="step-title">ช็อตเปิด หรือสิ่งที่ต้องมี (ไม่บังคับ)</span></div>
+            <p class="step-help">เช่น เปิดด้วยช็อตน้ำซุปเดือด, ต้องมีป้ายราคา 15 บาท, ปิดท้ายด้วยชื่อร้าน</p>
+            <input id="storyExtra" class="large-input" type="text"
+                placeholder="เช่น เปิดด้วยช็อตน้ำซุปเดือด ปิดท้ายด้วยชื่อร้านและแผนที่"
+                oninput="refreshStoryPrompt()">
+        </div>
+
+        <div class="step">
+            <div><span class="step-number">9</span><span class="step-title">ภาษาและความยาว Prompt</span></div>
+            <p class="step-help">CapCut แต่ละเวอร์ชันจำกัดความยาวไม่เท่ากัน ดูตัวเลขที่ช่องพิมพ์ใน CapCut แล้วเลือกให้ตรง</p>
+            <div class="choice-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:15px;">
+                <button class="choice" data-sgroup="lang" data-value="th" onclick="selectStoryChoice(this)"><span class="choice-icon">🇹🇭</span>Prompt ภาษาไทย</button>
+                <button class="choice" data-sgroup="lang" data-value="en" onclick="selectStoryChoice(this)"><span class="choice-icon">🇬🇧</span>Prompt ภาษาอังกฤษ (แนะนำ AI เข้าใจดีกว่า)</button>
+            </div>
+            <div class="choice-grid">
+                <button class="choice" data-sgroup="limit" data-value="200" onclick="selectStoryChoice(this)"><span class="choice-icon">▫</span>ไม่เกิน 200 ตัวอักษร</button>
+                <button class="choice" data-sgroup="limit" data-value="300" onclick="selectStoryChoice(this)"><span class="choice-icon">▪</span>ไม่เกิน 300 ตัวอักษร</button>
+                <button class="choice" data-sgroup="limit" data-value="500" onclick="selectStoryChoice(this)"><span class="choice-icon">◼</span>ไม่เกิน 500 ตัวอักษร</button>
+                <button class="choice" data-sgroup="limit" data-value="1000" onclick="selectStoryChoice(this)"><span class="choice-icon">⬛</span>ไม่เกิน 1000 ตัวอักษร</button>
+            </div>
+        </div>
+
+        <div class="button-row gen-row">
+            <button class="primary-btn" onclick="generateStoryPrompt()">สร้าง Prompt สั่งตัดให้ฉัน</button>
+            <button class="secondary-btn" onclick="storyExample()">ลองตัวอย่าง</button>
+            <button class="danger-btn" onclick="clearStoryBuilder()">เริ่มใหม่</button>
+        </div>
+
+        <div id="storyResult" class="result" style="display:none;">
+            <h3>Prompt สั่งตัดของคุณพร้อมแล้ว</h3>
+            <p>คัดลอกไปวางในช่อง Prompt ของฟีเจอร์ตัดอัตโนมัติด้วย AI ใน CapCut
+               <span style="color:var(--muted);font-size:16px;">(เปลี่ยนตัวเลือกด้านบนได้ตลอด ข้อความจะอัปเดตให้เอง)</span></p>
+            <div id="storyPromptOutput" class="prompt-box" style="min-height:90px;"></div>
+            <p id="storyCounter" style="margin:10px 0 0;font-weight:bold;"></p>
+            <div class="button-row">
+                <button class="primary-btn" onclick="copyText('storyPromptOutput','storyCopyMessage','คัดลอก Prompt เรียบร้อยแล้ว')">คัดลอก Prompt</button>
+                <button class="secondary-btn" onclick="speakText(document.getElementById('storyPromptOutput').textContent)">อ่านให้ฟัง</button>
+            </div>
+            <p id="storyCopyMessage" style="color:var(--green);font-weight:bold;margin-top:15px;"></p>
+
+            <div class="open-app-row">
+                <p>ขั้นต่อไป: เปิด CapCut แล้ววาง Prompt ในช่องของฟีเจอร์ตัดอัตโนมัติ (ระบบคัดลอกให้อัตโนมัติ)</p>
+                <div class="button-row" style="margin-top:0;">
+                    <a class="app-btn capcut" href="https://www.capcut.com" target="_blank" rel="noopener" onclick="return copyForApp('storyPromptOutput', 'storyCopyMessage')">
+                        <span class="app-logo">✂</span>เปิด CapCut
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<aside class="related"><h3>ไปต่อที่เกี่ยวข้อง</h3><div class="related-grid"><a class="rel-card" href="page-flow.html"><div class="ic cat-video">🎞</div><div><b>ภาพนิ่ง → วิดีโอ 3 ช็อต</b><span>กำหนดการเคลื่อนกล้องและการเคลื่อนไหวทีละช็อต สำหรับ Google F</span></div></a><a class="rel-card" href="page-post.html"><div class="ic cat-ai">✍</div><div><b>เขียนโพสต์โซเชียล</b><span>ขายของ เล่าเรื่อง แจ้งข่าว ให้ AI เขียนโพสต์มาให้เลือก 3 แบบ</span></div></a><a class="rel-card" href="page-image.html"><div class="ic cat-create">✨</div><div><b>สร้างภาพด้วย AI</b><span>ตอบคำถามทีละข้อ แล้วรับ Prompt สำหรับให้ AI สร้างภาพ พร้อมคล</span></div></a></div></aside>
+
+<footer>
+    <p style="font-size:20px;font-weight:bold;color:#ffffff;">คัมภีร์ใช้ AI</p>
+    <p>ออกแบบให้ทุกคนสามารถเริ่มต้นใช้งาน AI ได้ง่าย</p>
+    <p style="opacity:.8;font-size:14px;margin-top:12px;">หมายเหตุ: คำสั่งในเว็บนี้เป็นคำสำคัญสำหรับช่วยเขียน Prompt ไม่ใช่คำสั่งที่ AI ทุกระบบรองรับโดยตรง</p>
+</footer>
+<div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <hr>
+        <h3>ใช้เมื่อไหร่?</h3>
+        <p id="modalUse"></p>
+        <h3>ตัวอย่าง</h3>
+        <div id="modalExample" class="prompt-box"></div>
+        <div class="button-row">
+            <button class="primary-btn" onclick="useCommand()">ใช้คำสั่งนี้</button>
+        </div>
+    </div>
+</div>
+<div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt="ภาพขยาย"></div>
+<script src="app.js"></script>
+</body>
+</html>

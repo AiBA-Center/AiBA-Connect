@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คัมภีร์ใช้ AI — ฉบับใช้ง่ายสำหรับทุกคน</title>
+<meta name="theme-color" content="#ff6f61">
+<meta name="application-name" content="คัมภีร์ AI">
+<meta name="apple-mobile-web-app-title" content="คัมภีร์ AI">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-inner">
+  <div style="display:flex;align-items:center;gap:10px"><div class="brand-icon" style="width:40px;height:40px;font-size:17px">AI</div><b style="font-family:var(--font-head);font-size:19px">คัมภีร์ใช้ AI</b></div>
+  <div class="topbar-title"></div>
+  <div class="topbar-tools">
+    <button onclick="changeFontSize(1)" title="เพิ่มขนาดตัวอักษร">A+</button>
+    <button onclick="changeFontSize(-1)" title="ลดขนาดตัวอักษร">A-</button>
+    <button id="themeBtn" onclick="toggleTheme()" title="สลับธีม">🌙 มืด</button>
+  </div>
+</div></div>
+
+<section class="home-hero">
+  <div class="blob" style="width:320px;height:320px;background:var(--cat-create-2);left:-80px;top:-60px"></div>
+  <div class="blob" style="width:280px;height:280px;background:var(--cat-video-2);right:-60px;top:20px"></div>
+  <div class="blob" style="width:220px;height:220px;background:var(--cat-ai-1);left:40%;bottom:-120px"></div>
+  <span class="home-badge">ไม่ต้องเก่งคอมพิวเตอร์ ก็ใช้ได้</span>
+  <h1>อยากให้ AI ช่วยอะไร<br><span>เลือกได้เลย</span></h1>
+  <p>ทุกระบบทำงานเหมือนกัน: เลือกปุ่ม → ได้คำสั่งสำเร็จรูป → คัดลอกไปวางใน ChatGPT / Gemini / CapCut</p>
+  <div id="installHint" class="install-hint"></div>
+</section>
+
+<main class="home">
+
+  <div class="cat">
+    <div class="cat-head"><div class="ic cat-create">🎨</div><h2>สร้างสรรค์<small>ภาพ โปสเตอร์ การ์ดอวยพร</small></h2></div>
+    <div class="tiles"><a class="tile" href="page-image.html"><div class="ic cat-create">✨</div><div><h3>สร้างภาพด้วย AI</h3><p>ตอบคำถามทีละข้อ แล้วรับ Prompt สำหรับให้ AI สร้างภาพ พร้อมคลังคำสั่งพิเศษ</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-poster.html"><div class="ic cat-create">🖼</div><div><h3>สไตล์โปสเตอร์โฆษณาสินค้า</h3><p>เลือกสไตล์จากภาพตัวอย่าง 10 แบบ รับ Prompt สำเร็จรูปสำหรับรูปสินค้าของคุณ</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-greeting.html"><div class="ic cat-create">🌸</div><div><h3>ภาพอวยพร</h3><p>เลือกสไตล์ เปลี่ยนวัน คำอวยพร ชื่อ แล้วรับ Prompt สำเร็จรูป ส่งใน LINE</p></div><span class="go">เริ่ม →</span></a></div>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><div class="ic cat-video">🎬</div><h2>วิดีโอ<small>จากภาพนิ่งสู่คลิปสั้น</small></h2></div>
+    <div class="tiles"><a class="tile" href="page-flow.html"><div class="ic cat-video">🎞</div><div><h3>ภาพนิ่ง → วิดีโอ 3 ช็อต</h3><p>กำหนดการเคลื่อนกล้องและการเคลื่อนไหวทีละช็อต สำหรับ Google Flow</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-capcut.html"><div class="ic cat-video">✂</div><div><h3>สั่งตัดวิดีโอใน CapCut</h3><p>สร้าง Prompt สั้น ๆ สำหรับฟีเจอร์ตัดอัตโนมัติด้วย AI พร้อมนับตัวอักษร</p></div><span class="go">เริ่ม →</span></a></div>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><div class="ic cat-ai">🤖</div><h2>ผู้ช่วย AI<small>ให้ AI ทำงานแทนเราอย่างปลอดภัย</small></h2></div>
+    <div class="tiles"><a class="tile" href="page-gem.html"><div class="ic cat-ai">💎</div><div><h3>สร้าง GEM</h3><p>สร้างผู้ช่วย AI ส่วนตัวใน Gemini พร้อมกฎความปลอดภัย</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-ask.html"><div class="ic cat-ai">💬</div><div><h3>ถาม AI เรื่องใกล้ตัว</h3><p>ยา ผลตรวจ จดหมายธนาคาร สิทธิรักษา ให้ AI อธิบายง่าย ๆ อย่างปลอดภัย</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-post.html"><div class="ic cat-ai">✍</div><div><h3>เขียนโพสต์โซเชียล</h3><p>ขายของ เล่าเรื่อง แจ้งข่าว ให้ AI เขียนโพสต์มาให้เลือก 3 แบบ</p></div><span class="go">เริ่ม →</span></a></div>
+  </div>
+
+  <div class="cat">
+    <div class="cat-head"><div class="ic cat-safe">🛡</div><h2>ปลอดภัย<small>รู้ทันมิจฉาชีพ</small></h2></div>
+    <div class="tiles"><a class="tile" href="page-scam.html"><div class="ic cat-safe">🛡</div><div><h3>รู้ทันหลอกลวง</h3><p>ตรวจข้อความหรือสายแปลก ๆ กับ AI ก่อนทำอะไร พร้อมสัญญาณเตือน 5 ข้อ</p></div><span class="go">เริ่ม →</span></a><a class="tile" href="page-scam-game.html"><div class="ic cat-safe">🎮</div><div><h3>เกม วัยเก๋ารู้ทัน</h3><p>จำลอง 10 สถานการณ์จริง เลือกว่าจะทำอย่างไร กับน้องแมวจิ๋ว</p></div><span class="go">เริ่ม →</span></a>
+      <a class="tile" href="game.html"><div class="ic" style="background:linear-gradient(135deg,#f72585,#7209b7)">🏁</div><div><h3>เกมปิดท้ายการอบรม</h3><p>ควิซลุ้นรางวัล + เขียนความรู้สึกขึ้นจอใหญ่ (ใช้ QR จากวิทยากร)</p></div><span class="go">เริ่ม →</span></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <div class="tiles">
+      <a class="tile wide" href="page-guide.html"><div class="ic cat-help">❔</div><div><h3>วิธีใช้งาน</h3><p>ใช้งานเพียง 4 ขั้นตอน เหมือนกันทุกระบบ · สำหรับวิทยากร: <span style="color:var(--cyan)">ตั้งค่าเกมปิดท้าย</span> อยู่ที่ <code>setup.html</code></p></div><span class="go">อ่าน →</span></a>
+    </div>
+  </div>
+</main>
+
+<footer>
+    <p style="font-size:20px;font-weight:bold;color:#ffffff;">คัมภีร์ใช้ AI</p>
+    <p>ออกแบบให้ทุกคนสามารถเริ่มต้นใช้งาน AI ได้ง่าย</p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
