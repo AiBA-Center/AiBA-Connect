@@ -685,3 +685,30 @@
         white-space: nowrap;
     }
     @media (max-width: 480px) { .brand-word { font-size: 24px; } }
+
+    /* ---------- GEM WORKSHEET ---------- */
+    .muted-inline { color: var(--muted); font-weight: 400; font-size: 15px; margin-left: 6px; }
+    .ws-job { background: var(--surface-2); border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 18px; }
+    .ws-job label { display: block; font-family: var(--font-head); font-weight: 600; font-size: 20px; margin-bottom: 8px; }
+    .ws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ws-box { border: 2px dashed; border-radius: var(--r-md); padding: 16px; background: var(--surface); }
+    .ws-input   { border-color: #2b2d7a; } .ws-input .ws-ic   { background: #2b2d7a; }
+    .ws-process { border-color: #7b2ff7; } .ws-process .ws-ic { background: #7b2ff7; }
+    .ws-output  { border-color: #e63946; } .ws-output .ws-ic  { background: #e63946; }
+    .ws-check   { border-color: #1e88e5; } .ws-check .ws-ic   { background: #1e88e5; }
+    .ws-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .ws-ic { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; flex: none; }
+    .ws-head b { font-family: var(--font-head); font-weight: 700; font-size: 24px; display: block; line-height: 1.1; }
+    .ws-input .ws-head b { color: #2b2d7a; } .ws-process .ws-head b { color: #7b2ff7; } .ws-output .ws-head b { color: #e63946; } .ws-check .ws-head b { color: #1e88e5; }
+    .ws-head small { color: var(--muted); font-size: 15px; }
+    .ws-box .large-textarea { min-height: 110px; }
+    .ws-secure { margin-top: 18px; border: 2px solid var(--green); background: linear-gradient(135deg, rgba(16,185,129,.10), rgba(16,185,129,.03)); border-radius: var(--r-md); padding: 16px 18px; }
+    .ws-secure-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .ws-lock { width: 48px; height: 48px; border-radius: 14px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; flex: none; }
+    .ws-secure-head b { font-family: var(--font-head); font-weight: 600; font-size: 20px; display: block; color: var(--text); }
+    .ws-secure-head small { color: var(--muted); font-size: 15px; display: block; max-width: 70ch; }
+    .ws-check-badge { margin-left: auto; background: var(--green); color: #fff; border-radius: 30px; padding: 6px 14px; font-weight: 700; font-size: 15px; }
+    .ws-secure-list { margin: 12px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; font-size: 15px; color: var(--text); }
+    .ws-secure-list li::before { content: "✔ "; color: var(--green); font-weight: 700; }
+    body.dark .ws-box { background: var(--surface); }
+    @media (max-width: 800px) { .ws-grid, .ws-secure-list { grid-template-columns: 1fr; } .ws-check-badge { margin-left: 0; } }
