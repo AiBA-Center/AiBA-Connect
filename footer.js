@@ -5,10 +5,10 @@
 ========================================================== */
 (function () {
   const LINKS = {
-    facebook: "#",
-    youtube:  "#",
-    tiktok:   "#",
-    website:  "#"
+    facebook: "https://www.facebook.com/AiBACenter",
+    youtube:  "https://www.youtube.com/@AiBAPIM",
+    tiktok:   "https://www.tiktok.com/@aiba_center/",
+    website:  "https://et.pim.ac.th/aiba-home/"
   };
   const AIBA_TEXT = "AiBA Center · Artificial Intelligence Beyond Academy · ศูนย์ความเป็นเลิศด้านปัญญาประดิษฐ์แบบครบวงจร";
   const PIM_TEXT  = 'สถาบันการจัดการปัญญาภิวัฒน์ · 85/1 หมู่ 2 ถ.แจ้งวัฒนะ ต.บางตลาด อ.ปากเกร็ด นนทบุรี 11120 · โทร 0 2855 0000 · <a href="https://www.pim.ac.th" target="_blank" rel="noopener">www.pim.ac.th</a>';
