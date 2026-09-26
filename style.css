@@ -679,8 +679,9 @@
     .soc { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--accent-2)); color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: transform .15s, filter .15s; }
     .soc svg { width: 22px; height: 22px; }
     .soc:hover { transform: translateY(-3px); filter: brightness(1.1); }
-    .footer-aiba-logo { height: 56px; width: auto; background: #fff; border-radius: 12px; padding: 4px 8px; margin-bottom: 8px; }
-    .footer-center-name { font-family: var(--font-head); font-weight: 700; font-size: 24px; color: #fff; letter-spacing: 1px; }
+    .footer-center-row { display: inline-flex; align-items: center; gap: 12px; }
+    .footer-aiba-logo { height: 52px; width: auto; background: #fff; border-radius: 12px; padding: 4px 8px; }
+    .footer-center-name { font-family: var(--font-head); font-weight: 700; font-size: 26px; color: #fff; letter-spacing: 1px; }
     .footer-center-sub { font-size: 14px; opacity: .8; margin-top: 2px; }
     .footer-bottom { background: linear-gradient(135deg, var(--cyan), var(--accent-2)); color: #fff; text-align: center; padding: 16px 18px 14px; }
     .footer-inst { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; font-family: var(--font-head); font-weight: 600; font-size: 16px; letter-spacing: .3px; }
