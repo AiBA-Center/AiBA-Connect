@@ -1,18 +1,18 @@
 /* ==========================================================
-   footer.js — Footer มาตรฐานของเว็บ "คัมภีร์ใช้ AI" (ศูนย์ AiBA / PIM)
+   footer.js — Footer มาตรฐานของเว็บ "AiBA Connect" (ศูนย์ AiBA / PIM)
    วิธีใช้: วาง <script src="footer.js"></script> ก่อน </body> ในทุกหน้า
    แก้ลิงก์โซเชียล/ข้อความที่นี่ที่เดียว มีผลทุกหน้า
 ========================================================== */
 (function () {
   const LINKS = {
-    facebook: "https://www.facebook.com/AiBACenter",
-    youtube:  "https://www.youtube.com/@AiBAPIM",
-    tiktok:   "https://www.tiktok.com/@aiba_center",
-    website:  "https://et.pim.ac.th/aiba-home/"
+    facebook: "#",
+    youtube:  "#",
+    tiktok:   "#",
+    website:  "#"
   };
-  const AIBA_TEXT = "AiBA Center · Artificial Intelligence Beyond Academy · ศูนย์ความเป็นเลิศด้านปัญญาประดิษฐ์แบบครบวงจร";
+  const AIBA_TEXT = "ศูนย์ AiBA · Artificial Intelligence Beyond Academy · ศูนย์พัฒนาทักษะปัญญาประดิษฐ์เพื่อทุกวัย";
   const PIM_TEXT  = 'สถาบันการจัดการปัญญาภิวัฒน์ · 85/1 หมู่ 2 ถ.แจ้งวัฒนะ ต.บางตลาด อ.ปากเกร็ด นนทบุรี 11120 · โทร 0 2855 0000 · <a href="https://www.pim.ac.th" target="_blank" rel="noopener">www.pim.ac.th</a>';
-  const COPY = "© 2026 ศูนย์ AiBA — สถาบันการจัดการปัญญาภิวัฒน์ | ALL RIGHTS RESERVED";
+  const COPY = "© 2569 ศูนย์ AiBA — สถาบันการจัดการปัญญาภิวัฒน์ | ALL RIGHTS RESERVED";
 
   const ICON = {
     facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 22v-8h2.7l.4-3.2h-3.1V8.8c0-.9.3-1.6 1.6-1.6h1.7V4.4c-.3 0-1.3-.1-2.5-.1-2.5 0-4.1 1.5-4.1 4.2v2.3H7.4V14h2.8v8h3.3z"/></svg>',

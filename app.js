@@ -2266,7 +2266,7 @@ function showInstallHint(kind) {
     if (kind === "android") {
         box.innerHTML = `<div>📱 <b>เพิ่มเว็บนี้ไว้หน้าจอมือถือ</b><br>จะได้กดเปิดเหมือนแอป มีไอคอนของตัวเอง</div><button class="primary-btn" style="padding:12px 26px;font-size:17px;" onclick="installApp()">เพิ่มไปหน้าจอหลัก</button>`;
     } else {
-        box.innerHTML = `<div>📱 <b>เพิ่มเว็บนี้ไว้หน้าจอ iPhone</b><br>กดปุ่มแชร์ <span style="font-size:18px;">⎙</span> ด้านล่างของ Safari แล้วเลือก <b>"เพิ่มไปยังหน้าจอโฮม"</b><br>จะได้ไอคอน "คัมภีร์ AI" ไว้กดเปิดได้เลย</div>`;
+        box.innerHTML = `<div>📱 <b>เพิ่มเว็บนี้ไว้หน้าจอ iPhone</b><br>กดปุ่มแชร์ <span style="font-size:18px;">⎙</span> ด้านล่างของ Safari แล้วเลือก <b>"เพิ่มไปยังหน้าจอโฮม"</b><br>จะได้ไอคอน "AiBA Connect" ไว้กดเปิดได้เลย</div>`;
     }
     box.classList.add("active");
 }
