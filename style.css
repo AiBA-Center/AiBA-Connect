@@ -1,5 +1,4 @@
-
-    /* =========================
+/* =========================
        TOKENS — "deep ocean" tech theme
     ========================= */
         :root {
@@ -677,3 +676,15 @@
     @media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, 1fr); } .tile.wide { grid-column: span 2; } .related-grid { grid-template-columns: 1fr; } .topbar-title { display: none; } }
     @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } .tile.wide { grid-column: span 1; flex-direction: column; align-items: flex-start; } .page-hero-inner { flex-direction: column; align-items: flex-start; } }
 
+
+    /* ---------- BRAND WORDMARK ---------- */
+    .brand-word {
+        font-family: "Audiowide", "Kanit", sans-serif; font-size: 27px; letter-spacing: .5px; line-height: 1;
+        background: linear-gradient(90deg, #ff2fd6 0%, #7b2ff7 55%, #00c8ff 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+        filter: drop-shadow(0 2px 0 rgba(255,255,255,.6)) drop-shadow(0 0 10px rgba(123,47,247,.25));
+        white-space: nowrap;
+    }
+    .brand-word em { font-style: normal; color: var(--text); -webkit-text-fill-color: var(--text); background: none; }
+    body.dark .brand-word em { color: #fff; -webkit-text-fill-color: #fff; }
+    @media (max-width: 480px) { .brand-word { font-size: 22px; } }
