@@ -212,6 +212,6 @@ function save() {
 function copyLink(id) { const el = document.getElementById(id); navigator.clipboard.writeText(el.value).then(() => { el.select(); }); }
 try { const c = JSON.parse(localStorage.getItem(LS + "cfg")); if (c && c.api) { document.getElementById("api").value = c.api; if (c.key) document.getElementById("key").value = c.key; } } catch (e) {}
 </script>
-<script src="footer.js"></script>
+<script src="footer.js?v=20260926"></script>
 </body>
 </html>
