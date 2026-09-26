@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=20260926">
 </head>
 <body>
 <div class="topbar"><div class="topbar-inner">
@@ -43,19 +43,19 @@
 
     <div class="ws-grid">
         <div class="ws-box ws-input">
-            <div class="ws-head"><span class="ws-ic">📥</span><div><b>Input</b><small>คุณต้องให้ข้อมูลอะไร AI บ้าง?</small></div></div>
+            <div class="ws-head"><span class="ws-ic">📥</span><div><b>Input</b><br><small>คุณต้องให้ข้อมูลอะไร AI บ้าง?</small></div></div>
             <textarea id="gemInput" class="large-textarea" placeholder="เช่น ข้อความแชทจากลูกค้า, เมนูและราคา, เวลาเปิด-ปิด" oninput="refreshGemPrompt()"></textarea>
         </div>
         <div class="ws-box ws-process">
-            <div class="ws-head"><span class="ws-ic">⚙️</span><div><b>Process</b><small>AI ต้องทำอะไรเป็นขั้น ๆ? ใช้เกณฑ์อะไร?</small></div></div>
+            <div class="ws-head"><span class="ws-ic">⚙️</span><div><b>Process</b><br><small>AI ต้องทำอะไรเป็นขั้น ๆ? ใช้เกณฑ์อะไร?</small></div></div>
             <textarea id="gemProcess" class="large-textarea" placeholder="เช่น 1) อ่านคำถาม 2) ตอบจากเมนูที่ให้เท่านั้น 3) ถ้าถามนอกเมนูให้บอกว่าจะสอบถามเจ้าของร้าน 4) ปิดท้ายด้วยชวนสั่ง" oninput="refreshGemPrompt()"></textarea>
         </div>
         <div class="ws-box ws-output">
-            <div class="ws-head"><span class="ws-ic">📤</span><div><b>Output</b><small>ผลลัพธ์หน้าตาเป็นอย่างไร? ส่งใคร?</small></div></div>
+            <div class="ws-head"><span class="ws-ic">📤</span><div><b>Output</b><br><small>ผลลัพธ์หน้าตาเป็นอย่างไร? ส่งใคร?</small></div></div>
             <textarea id="gemOutput" class="large-textarea" placeholder="เช่น ข้อความสั้น 2-3 ประโยค ภาษาไทยสุภาพเป็นกันเอง มีอีโมจิ 1 ตัว ส่งให้ลูกค้าทาง LINE" oninput="refreshGemPrompt()"></textarea>
         </div>
         <div class="ws-box ws-check">
-            <div class="ws-head"><span class="ws-ic">✅</span><div><b>Check</b><small>จะรู้ได้อย่างไรว่าทำถูก?</small></div></div>
+            <div class="ws-head"><span class="ws-ic">✅</span><div><b>Check</b><br><small>จะรู้ได้อย่างไรว่าทำถูก?</small></div></div>
             <textarea id="gemCheck" class="large-textarea" placeholder="เช่น ราคาตรงกับเมนู, ไม่สัญญาสิ่งที่ร้านทำไม่ได้, ไม่มีคำหยาบ, ถ้าไม่แน่ใจต้องถามกลับ" oninput="refreshGemPrompt()"></textarea>
         </div>
     </div>
@@ -121,7 +121,7 @@
     </div>
 </div>
 <div id="lightbox" class="lightbox" onclick="closeLightbox()"><img id="lightboxImg" alt="ภาพขยาย"></div>
-<script src="app.js"></script>
-<script src="footer.js"></script>
+<script src="app.js?v=20260926"></script>
+<script src="footer.js?v=20260926"></script>
 </body>
 </html>
