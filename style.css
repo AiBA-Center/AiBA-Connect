@@ -1,4 +1,5 @@
-/* =========================
+
+    /* =========================
        TOKENS — "deep ocean" tech theme
     ========================= */
         :root {
@@ -696,11 +697,12 @@
     .ws-process { border-color: #7b2ff7; } .ws-process .ws-ic { background: #7b2ff7; }
     .ws-output  { border-color: #e63946; } .ws-output .ws-ic  { background: #e63946; }
     .ws-check   { border-color: #1e88e5; } .ws-check .ws-ic   { background: #1e88e5; }
-    .ws-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .ws-head { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+    .ws-head br { display: none; }
     .ws-ic { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; flex: none; }
     .ws-head b { font-family: var(--font-head); font-weight: 700; font-size: 24px; display: block; line-height: 1.1; }
     .ws-input .ws-head b { color: #2b2d7a; } .ws-process .ws-head b { color: #7b2ff7; } .ws-output .ws-head b { color: #e63946; } .ws-check .ws-head b { color: #1e88e5; }
-    .ws-head small { color: var(--muted); font-size: 15px; }
+    .ws-head small { color: var(--muted); font-size: 15px; display: block; margin-top: 4px; }
     .ws-box .large-textarea { min-height: 110px; }
     .ws-secure { margin-top: 18px; border: 2px solid var(--green); background: linear-gradient(135deg, rgba(16,185,129,.10), rgba(16,185,129,.03)); border-radius: var(--r-md); padding: 16px 18px; }
     .ws-secure-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
