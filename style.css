@@ -679,12 +679,9 @@
 
     /* ---------- BRAND WORDMARK ---------- */
     .brand-word {
-        font-family: "Audiowide", "Kanit", sans-serif; font-size: 27px; letter-spacing: .5px; line-height: 1;
-        background: linear-gradient(90deg, #ff2fd6 0%, #7b2ff7 55%, #00c8ff 100%);
+        font-family: var(--font-head); font-weight: 700; font-size: 30px; letter-spacing: .3px; line-height: 1;
+        background: linear-gradient(90deg, var(--cat-create-1), var(--cat-video-1), var(--cat-ai-1));
         -webkit-background-clip: text; background-clip: text; color: transparent;
-        filter: drop-shadow(0 2px 0 rgba(255,255,255,.6)) drop-shadow(0 0 10px rgba(123,47,247,.25));
         white-space: nowrap;
     }
-    .brand-word em { font-style: normal; color: var(--text); -webkit-text-fill-color: var(--text); background: none; }
-    body.dark .brand-word em { color: #fff; -webkit-text-fill-color: #fff; }
-    @media (max-width: 480px) { .brand-word { font-size: 22px; } }
+    @media (max-width: 480px) { .brand-word { font-size: 24px; } }
