@@ -1339,7 +1339,7 @@ function applyTheme(theme) {
     document.body.classList.toggle("dark", theme === "dark");
     const b = document.getElementById("themeBtn");
     if (b) b.textContent = theme === "dark" ? "☀ สว่าง" : "🌙 มืด";
-    safeSet("theme", theme);
+    try { localStorage.setItem("aiba:theme", theme); } catch (e) {}
 }
 function toggleTheme() {
     applyTheme(document.body.classList.contains("dark") ? "light" : "dark");
@@ -2180,12 +2180,19 @@ function installApp() {
    FONT SIZE
 ========================================== */
 
+const ZOOM_LEVELS = [1, 1.15, 1.3, 1.5];
+let zoomLevel = 0;
+function applyZoom() {
+    // ขยายทั้งหน้า (ตัวหนังสือ ปุ่ม กล่อง) ไม่ใช่แค่หัวข้อ
+    const z = ZOOM_LEVELS[zoomLevel];
+    document.body.style.zoom = z;
+    if (!("zoom" in document.body.style)) { document.documentElement.style.fontSize = (100 * z) + "%"; }
+    try { localStorage.setItem("aiba:zoom", String(zoomLevel)); } catch (e) {}
+    document.querySelectorAll("[data-zoom-label]").forEach(el => el.textContent = Math.round(z * 100) + "%");
+}
 function changeFontSize(direction) {
-    if (direction > 0) {
-        document.body.classList.add("large-text");
-    } else {
-        document.body.classList.remove("large-text");
-    }
+    zoomLevel = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, zoomLevel + (direction > 0 ? 1 : -1)));
+    applyZoom();
 }
 
 
@@ -2221,7 +2228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setDefaultFlowOptions();
     addCustomInputs();
     setupMobileAppLinks();
-    applyTheme(safeGet("theme") || "light");
+    let th = "light"; try { th = localStorage.getItem("aiba:theme") || "light"; } catch (e) {} applyTheme(th);
+    try { zoomLevel = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, parseInt(localStorage.getItem("aiba:zoom") || "0", 10) || 0)); } catch (e) {} applyZoom();
     addVoiceButtons();
     setupWizards();
     checkResume();
