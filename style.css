@@ -673,9 +673,9 @@
        SITE FOOTER — บน: AiBA (เข้ม) / ล่าง: สถาบัน (แถบสีธีม)
     ========================= */
     .site-footer { margin-top: 50px; }
-    .footer-top { background: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 34px 18px 30px;
+    .footer-top { background: var(--footer-bg); color: var(--footer-text); text-align: center; padding: 16px 18px 14px;
         background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,.06) 0 2px, transparent 3px), radial-gradient(circle at 70% 70%, rgba(255,255,255,.05) 0 2px, transparent 3px); background-size: 140px 140px, 200px 200px; }
-    .footer-socials { display: flex; justify-content: center; gap: 14px; margin-bottom: 18px; }
+    .footer-socials { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
     .soc { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--accent-2)); color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: transform .15s, filter .15s; }
     .soc svg { width: 22px; height: 22px; }
     .soc:hover { transform: translateY(-3px); filter: brightness(1.1); }
