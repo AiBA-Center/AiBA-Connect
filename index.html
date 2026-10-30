@@ -19,6 +19,14 @@
   /* สีหมวดใหม่ 2 หมวด (ใส่ไว้ในหน้านี้ ไม่ต้องแก้ style.css) */
   .cat-lab  { background: linear-gradient(135deg, #f59e0b, #ef4444); }
   .cat-tool { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
+  .brand-word {
+    font-family: "Kanit", sans-serif; font-weight: 700; font-size: 30px; letter-spacing: .4px; line-height: 1; white-space: nowrap;
+    color: #111; -webkit-text-fill-color: #111; background: none;
+    -webkit-text-stroke: 0;
+    text-shadow: -2px -2px 0 #fff, 2px -2px 0 #fff, -2px 2px 0 #fff, 2px 2px 0 #fff, 0 -2px 0 #fff, 0 2px 0 #fff, -2px 0 0 #fff, 2px 0 0 #fff, 0 4px 10px rgba(0,0,0,.18);
+  }
+  body.dark .brand-word { color: #fff; -webkit-text-fill-color: #fff; text-shadow: -2px -2px 0 #111, 2px -2px 0 #111, -2px 2px 0 #111, 2px 2px 0 #111, 0 -2px 0 #111, 0 2px 0 #111, -2px 0 0 #111, 2px 0 0 #111; }
+  @media (max-width: 480px) { .brand-word { font-size: 24px; } }
 </style>
 </head>
 <body class="home-body">
@@ -42,9 +50,9 @@
 <main class="home">
 
   <div class="home-cat">
-    <div class="home-cat-head"><div class="ic cat-lab">🧪</div><h2>ฝึกฝนทักษะการใช้งาน AI<small>สนามซ้อมเขียนคำสั่งด้วยตัวเอง</small></h2></div>
+    <div class="home-cat-head"><div class="ic cat-lab">🎯</div><h2>ฝึกฝนทักษะการใช้งาน AI<small>สนามซ้อมเขียนคำสั่งด้วยตัวเอง</small></h2></div>
     <div class="tiles">
-      <a class="tile" href="https://wtkworking.github.io/Prompt-Lab/" target="_blank" rel="noopener"><div class="ic cat-lab">🧪</div><div><h3>AiBA Prompt Lab</h3><p>เครื่องมือฝึกเขียนคำสั่ง AI ลองเขียนเอง ดูผล ปรับจนเก่ง</p></div><span class="go">เปิด ↗</span></a>
+      <a class="tile" href="https://wtkworking.github.io/Prompt-Lab/" target="_blank" rel="noopener"><div class="ic cat-lab">⌨️</div><div><h3>AiBA Prompt Lab</h3><p>เครื่องมือฝึกเขียนคำสั่ง AI ลองเขียนเอง ดูผล ปรับจนเก่ง</p></div><span class="go">เปิด ↗</span></a>
     </div>
   </div>
 
